@@ -171,7 +171,7 @@ export const scrapeURL = async (url) => {
  */
 export const checkPlanAccess = (feature) => {
     const planName = s.user?.plan || 'free'; 
-    const limits = PLAN_LIMITS[planName];
+    const limits = PLANS[planName];
 
     if (!limits) return false;
 

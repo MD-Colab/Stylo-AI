@@ -5,7 +5,6 @@ import { notify, setLoading } from './ui.js';
 import { PLANS } from './constants.js';
 
 export async function initiatePayment(planType, btnElement) {
-    // FIX: auth check
     const user = auth?.currentUser;
     if (!user) return notify("Please sign in to upgrade.", "error");
 
@@ -15,7 +14,15 @@ export async function initiatePayment(planType, btnElement) {
     setLoading(btnElement, true, 'Connecting...');
 
     try {
-        // This calls your Vercel API
+        // 1. Fetch the Public Key from Firestore (settings/api_keys -> razorpayKeyId)
+        const keyDoc = await getDoc(doc(db, "settings", "api_keys"));
+        const razorpayPublicKey = keyDoc.exists() ? keyDoc.data().razorpayKeyId : null;
+
+        if (!razorpayPublicKey) {
+            throw new Error("Razorpay Public Key not found in database.");
+        }
+
+        // 2. Call your Vercel API to get the Subscription ID
         const response = await fetch('/api/create-subscription', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -24,19 +31,13 @@ export async function initiatePayment(planType, btnElement) {
                 customerEmail: user.email 
             })
         });
-    // CHECK IF RESPONSE IS OK BEFORE PARSING JSON
-    if (!response.ok) {
-        const errorText = await response.text(); // Read as text first
-        console.error("Server Error Response:", errorText);
-        throw new Error("Server Error: " + errorText);
-    }
-
 
         const data = await response.json();
         if (data.error) throw new Error(data.error);
 
+        // 3. Open Razorpay Checkout
         const options = {
-            "key": "rzp_live_YOUR_KEY", 
+            "key": razorpayPublicKey.trim(), // FIXED: Now uses the real key from Firestore
             "subscription_id": data.subscriptionId,
             "name": "Stylo AI",
             "description": `Monthly ${plan.name} Plan`,
@@ -45,7 +46,10 @@ export async function initiatePayment(planType, btnElement) {
                 notify("Success! Subscription active.", "success");
                 window.location.reload();
             },
-            "prefill": { "email": user.email },
+            "prefill": { 
+                "name": user.displayName || "",
+                "email": user.email 
+            },
             "theme": { "color": "#4A47A3" }
         };
 
@@ -53,7 +57,7 @@ export async function initiatePayment(planType, btnElement) {
         rzp.open();
     } catch (err) {
         console.error(err);
-        notify("Gateway Error. Ensure you have deployed to Vercel.", "error");
+        notify(err.message, "error");
     } finally {
         setLoading(btnElement, false);
     }

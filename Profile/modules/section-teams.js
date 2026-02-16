@@ -67,7 +67,28 @@ export const fetchAndRenderTeams = async () => {
                 if (canAccessTeams) {
                     actionButton = `<button class="btn btn--sm btn--secondary manage-team-btn" data-id="${ws.id}">Manage</button>`;
                 } else {
-                    actionButton = `<a href="#pricing" class="btn btn--sm btn--primary" style="background: linear-gradient(90deg, #6366f1, #a855f7); border:none; text-decoration:none;">Upgrade to Access</a>`;
+                    actionButton = `<a href="#pricing"
+   style="
+   display:inline-block;
+   padding:12px 28px;
+   font-size:14px;
+   font-weight:700;
+   letter-spacing:1px;
+   text-transform:uppercase;
+   background:linear-gradient(135deg,#0f172a,#1e293b 40%,#6366f1);
+   color:#ffffff;
+   border-radius:40px;
+   border:1px solid rgba(255,255,255,0.15);
+   text-decoration:none;
+   box-shadow:
+     0 8px 25px rgba(99,102,241,0.35),
+     inset 0 1px 0 rgba(255,255,255,0.15);
+   backdrop-filter:blur(8px);
+   transition:all 0.3s ease;
+   ">
+   🔥 Elite Access
+</a>
+`;
                 }
 
                 return `
@@ -127,7 +148,29 @@ export const fetchAndRenderInvites = async () => {
 
             if (canJoinTeam) {
         actionButtons = `
-            <button class="btn btn--sm btn--secondary decline-invite-btn" data-id="${inv.id}">Decline</button>
+            <button 
+   class="btn btn--sm btn--secondary decline-invite-btn" 
+   data-id="${inv.id}"
+   style="
+   display:inline-block;
+   padding:10px 22px;
+   font-size:13px;
+   font-weight:600;
+   letter-spacing:0.6px;
+   text-transform:uppercase;
+   background:linear-gradient(135deg,#2a2a2a,#3a3a3a);
+   color:#f87171;
+   border-radius:30px;
+   border:1px solid rgba(248,113,113,0.4);
+   box-shadow:
+     0 4px 12px rgba(0,0,0,0.3),
+     inset 0 1px 0 rgba(255,255,255,0.05);
+   cursor:pointer;
+   transition:all 0.3s ease;
+   ">
+   ✖ Decline
+</button>
+
             <button class="btn btn--sm btn--primary accept-invite-btn" 
                 data-id="${inv.id}" 
                 data-type="${inv.type || 'workspace'}" 
@@ -136,8 +179,52 @@ export const fetchAndRenderInvites = async () => {
             } else {
                 // NO PLAN: Show Upgrade
                 actionButtons = `
-                    <button class="btn btn--sm btn--secondary decline-invite-btn" data-id="${inv.id}">Decline</button>
-                    <a href="#pricing" class="btn btn--sm btn--primary" style="background:#e92cb0; border-color:#e92cb0; color:white; text-decoration:none;">Upgrade to Join</a>
+                    <button 
+   class="btn btn--sm btn--secondary decline-invite-btn" 
+   data-id="${inv.id}"
+   style="
+   display:inline-block;
+   padding:10px 22px;
+   font-size:13px;
+   font-weight:600;
+   letter-spacing:0.6px;
+   text-transform:uppercase;
+   background:linear-gradient(135deg,#2a2a2a,#3a3a3a);
+   color:#f87171;
+   border-radius:30px;
+   border:1px solid rgba(248,113,113,0.4);
+   box-shadow:
+     0 4px 12px rgba(0,0,0,0.3),
+     inset 0 1px 0 rgba(255,255,255,0.05);
+   cursor:pointer;
+   transition:all 0.3s ease;
+   ">
+   ✖ Decline
+</button>
+
+                    <a href="#pricing"
+   style="
+   display:inline-block;
+   padding:11px 26px;
+   font-size:13px;
+   font-weight:600;
+   letter-spacing:0.8px;
+   text-transform:uppercase;
+   background:linear-gradient(135deg,#1e293b,#334155 50%,#6366f1);
+   color:#ffffff;
+   border-radius:35px;
+   border:1px solid rgba(255, 255, 255, 0.53);
+   text-decoration:none;
+   box-shadow:
+     0 6px 18px rgba(165, 99, 241, 0.25),
+     inset 0 1px 0 rgba(255,255,255,0.12);
+   backdrop-filter:blur(6px);
+   transition:all 0.3s ease;
+   ">
+   🚀 Upgrade to Access
+</a>
+
+
                 `;
             }
 
