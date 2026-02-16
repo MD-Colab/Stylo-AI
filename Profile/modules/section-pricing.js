@@ -12,22 +12,47 @@ export const initPricing = () => {
 };
 
 export const updatePricingUI = () => {
-    const plan = state.currentUser.plan || 'free';
+    const user = state.currentUser;
+    
+    // 🔥 More reliable detection
+    let plan = 'free';
+
+    if (user?.plan === 'business' || user?.isEarlyBird === true) {
+        plan = 'business';
+    } else if (user?.plan) {
+        plan = user.plan;
+    }
+
     const allIds = ['free', 'startup', 'pro', 'prebusiness', 'business'];
     
-    allIds.forEach(id => {
-        const btnId = id === 'free' ? '#card-free button' : `#btn-${id === 'prebusiness' ? 'prebiz' : id}`; 
-        const btn = document.querySelector(btnId);
-        if (btn) {
-            if (id === plan) {
-                btn.textContent = "Current Plan";
-                btn.disabled = true;
-                btn.className = "btn btn--secondary full-width";
-            } else {
-                btn.textContent = "Upgrade"; 
-                btn.disabled = false;
-                if (id !== 'free') btn.className = id === 'pro' || id === 'startup' ? "btn btn--primary full-width" : "btn btn--secondary full-width";
-            }
-        }
-    });
+    const idMap = {
+    free: null,
+    startup: 'btn-startup',
+    pro: 'btn-pro',
+    prebusiness: 'btn-prebiz',
+    business: 'btn-biz'
+};
+
+allIds.forEach(id => {
+
+    const btn = id === 'free'
+        ? document.querySelector('#card-free button')
+        : document.getElementById(idMap[id]);
+
+    if (!btn) return;
+
+    if (id === plan) {
+        btn.textContent = "Current Plan";
+        btn.disabled = true;
+        btn.className = "btn btn--secondary full-width";
+    } else {
+        btn.textContent = "Upgrade";
+        btn.disabled = false;
+        btn.className =
+            id === 'pro' || id === 'startup'
+                ? "btn btn--primary full-width"
+                : "btn btn--secondary full-width";
+    }
+});
+
 };

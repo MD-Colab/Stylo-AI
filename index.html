@@ -3,266 +3,503 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stylo AI - Build Websites Instantly with AI</title>
+    <title>Stylo AI - Build Websites Instantly</title>
     <link rel="icon" href="assets/Images/logo1.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="home.css">
 </head>
 <body>
 
-    <header class="header">
+    <header class="header animate-on-scroll anim-fade-up">
         <div class="container">
-            <div class="logo">
-                <img src="./assets/Images/logo1.png" alt="logo" width="110px">
-            </div>
+            <a href="#" class="logo">
+                <img src="./assets/Images/logo1.png" alt="logo">
+            </a>
             
-            <!-- Desktop Nav -->
-            <nav class="nav desktop-nav">
+            <nav class="desktop-nav">
                 <a href="#features">Features</a>
                 <a href="#templates" id="nav-templates-link">Templates</a>
-                <a href="#faq">FAQ</a>
-                <a href="/Documentation/">Documentations</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#pricing">Pricing</a>
+                <a href="/Documentation/">Docs</a>
             </nav>
             
             <div class="header-actions">
-                <a href="Project/?modal=new-project-modal" class="btn btn--primary btn--header desktop-btn">Open Editor</a>
-                <a href="./Profile/" class="btn btn--primary btn--header desktop-btn">Profile</a>
+                <a href="Project/?modal=new-project-modal" class="btn btn-primary desktop-btn">Open Editor</a>
                 
+                <!-- 1. LOGIN BUTTON (ID added) -->
+                <a href="./Profile/" id="login-btn" class="btn btn-secondary desktop-btn">Login</a>
+
+                <!-- 2. USER PROFILE DROPDOWN (Hidden by default) -->
+                <div id="user-profile-box" class="user-profile-box" style="display: none;">
+                    <div class="profile-trigger" onclick="toggleProfileMenu()">
+                        <!-- Added referrerpolicy attribute -->
+                        <img id="header-avatar" src="https://ui-avatars.com/api/?name=User&background=random" alt="Profile" referrerpolicy="no-referrer">
+                    </div>
+                    <!-- Dropdown Menu -->
+                    <div id="profile-dropdown" class="profile-dropdown">
+                        <div class="dropdown-header">
+                            <strong id="header-username">User</strong>
+                            <small id="header-email">user@email.com</small>
+                        </div>
+                        <a href="./Profile/"><i class="fas fa-user-circle"></i> My Profile</a>
+                        <a href="./Profile/#teams"><i class="fas fa-users"></i> My Teams</a>
+                        <a href="#" id="header-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+
                 <!-- Mobile Menu Button -->
-                <button class="mobile-menu-btn" aria-label="Toggle navigation">
-                    <i class="fas fa-bars"></i>
-                </button>
+                <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
             </div>
         </div>
 
-        <!-- Mobile Navigation Dropdown -->
+        <!-- Restored Mobile Menu -->
         <div class="mobile-nav">
             <a href="#features" class="mobile-link">Features</a>
             <a href="#templates" class="mobile-link" id="mobile-nav-templates-link">Templates</a>
-            <a href="#faq" class="mobile-link">FAQ</a>
-            <a href="/Documentation/" class="mobile-link">Documentations</a>
-            <a href="Project/?modal=new-project-modal" class="btn btn--primary mobile-cta">Open Editor</a>
-                <a href="./Profile/" class="btn btn--primary btn--header desktop-btn">Profile</a>
+            <a href="#pricing" class="mobile-link">Pricing</a>
+            <a href="/Documentation/" class="mobile-link">Docs</a>
+            <a href="Project/?modal=new-project-modal" class="mobile-link" style="color:var(--accent-color)">Open Editor</a>
+            <a href="./Profile/" class="mobile-link">Login</a>
         </div>
     </header>
 
-    <main>
-        <!-- HERO SECTION -->
-        <section class="hero">
-            <div class="container hero__content">
-                <h1 class="hero__title">Build Websites Instantly with your Ideas</h1>
-                <p class="hero__subtitle">Describe your vision in plain English. Watch as Stylo AI crafts your unique website in seconds. No code required.</p>
-                <div class="hero__cta">
-                    <a href="Project/?modal=new-project-modal" class="btn btn--primary">Start Creating for Free</a>
-                    <a href="#templates" class="btn btn--secondary" id="show-templates-btn">See Templates</a>
-                </div>
-                <div class="hero__visual">
-                    <div class="laptop-mockup">
-                        <div class="laptop-screen">
-                             <img src="https://mujtabaalam.vercel.app/editor/laptop (2).gif" alt="AI generating a website preview">
-                        </div>
-                    </div>
-                </div>
+    <!-- HERO SECTION with VIDEO BACKGROUND -->
+    <section class="hero">
+        <!-- Video Background -->
+        <video class="hero-video" autoplay muted loop playsinline poster="assets/Images/hero-poster.jpg">
+            <!-- Use a generic tech background video url or local asset -->
+            <source src="https://video-previews.elements.envatousercontent.com/7583fe30-66ec-40bb-958c-68ec633f1dc2/watermarked_preview/watermarked_preview.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+
+        <div class="container hero-content">
+            <span class="badge animate-on-scroll anim-zoom-in delay-100">✨ AI-Powered Web Builder V2.0</span>
+            
+            <h1 class="hero-title animate-on-scroll anim-fade-up delay-200">
+                Turn Ideas into <br> Reality Instantly
+            </h1>
+            
+            <p class="hero-subtitle animate-on-scroll anim-fade-up delay-300">
+                Describe your vision in plain English. Watch as Stylo AI crafts your unique website in seconds. No coding required.
+            </p>
+            
+            <div class="animate-on-scroll anim-zoom-in delay-300">
+                <a href="Project/?modal=new-project-modal" class="btn btn-primary" style="font-size:1.1rem; padding:1rem 2.5rem;">
+                    Start Creating Free <i class="fas fa-arrow-right"></i>
+                </a>
+                <a href="#templates" class="btn btn-secondary" id="show-templates-btn" style="margin-left:1rem;">View Templates</a>
             </div>
-        </section>
 
-        <!-- HOW IT WORKS SECTION -->
-        <section class="how-it-works">
-            <div class="container">
-                <h2 class="section-title">How It Works in 3 Simple Steps</h2>
-                <div class="steps__grid">
-                    <div class="step-item">
-                        <span>1</span>
-                        <h3>Describe</h3>
-                        <p>Chat with the AI and describe the website you want to create.</p>
-                    </div>
-                    <div class="step-item">
-                        <span>2</span>
-                        <h3>Generate & Refine</h3>
-                        <p>Let the AI generate the code, then tweak it with chat or our code editor.</p>
-                    </div>
-                    <div class="step-item">
-                        <span>3</span>
-                        <h3>Deploy & Share</h3>
-                        <p>Publish your finished website to a live URL instantly.</p>
-                    </div>
-                </div>
+            <div class="mockup-container animate-on-scroll anim-fade-up delay-300">
+                <img src="https://mujtabaalam.vercel.app/editor/laptop (2).gif" alt="Stylo AI Editor Interface">
             </div>
-        </section>
-        
-        <!-- FEATURES SHOWCASE -->
-        <section id="features" class="feature-showcase">
-            <div class="container">
-                <h2 class="section-title">Everything You Need</h2>
-                
-                <div class="feature-showcase__item">
-                    <div class="feature-showcase__text">
-                        <h3>Conversational Web Design</h3>
-                        <p>Simply talk to the AI. Ask for a landing page, a portfolio, or a blog. Request changes, new sections, or different color schemes. It's like having a developer and designer on call, 24/7.</p>
-                    </div>
-                    <div class="feature-showcase__image">
-                        <img src="https://mujtabaalam.vercel.app/editor/assets/videos/Conversational Web Design.gif" alt="Chat interface">
-                    </div>
-                </div>
+        </div>
+    </section>
 
-                <div class="feature-showcase__item feature-showcase__item--reversed">
-                    <div class="feature-showcase__text">
-                        <h3>AI-Powered Code Editor</h3>
-                        <p>Dive into the code with an intelligent assistant. Select any part of your HTML, CSS, or JavaScript and ask the AI to refactor, debug, or add new functionality.</p>
-                    </div>
-                    <div class="feature-showcase__image">
-                        <img src="https://mujtabaalam.vercel.app/editor/assets/videos/AI suggestion.gif" alt="AI code suggestions">
-                    </div>
-                </div>
-
-                <div class="feature-showcase__item">
-                    <div class="feature-showcase__text">
-                        <h3>One-Click Deployment</h3>
-                        <p>Forget complex hosting configurations. When your site is ready, deploy it to a publicly accessible URL with a single click.</p>
-                    </div>
-                    <div class="feature-showcase__image">
-                        <img src="https://mujtabaalam.vercel.app/editor/assets/videos/Deploy function.gif" alt="Deployment dashboard">
-                    </div>
-                </div>
+    <!-- NEW: STATS SECTION -->
+    <section class="stats-section">
+        <div class="container stats-grid">
+            <div class="stat-item animate-on-scroll anim-zoom-in">
+                <h3>180+</h3>
+                <p>Websites Generated</p>
             </div>
-        </section>
-
-        <!-- TEMPLATES SECTION -->
-        <section id="templates" class="templates" style="display: none;">
-            <div class="container">
-                <h2 class="section-title">Start with a Template</h2>
-                <p class="section-subtitle">Explore professionally designed, community-shared templates to jumpstart your project.</p>
-                
-                <div class="templates__controls">
-                    <div class="search-wrapper">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="template-search" placeholder="Search templates...">
-                    </div>
-                    <div class="category-filters-wrapper">
-                        <div class="category-filters" id="category-filters">
-                            <!-- JS Generated -->
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="public-templates-grid" class="templates__grid">
-                    <div class="templates-loading">
-                        <div class="spinner"></div>
-                        <p>Loading community templates...</p>
-                    </div>
-                </div>
+            <div class="stat-item animate-on-scroll anim-zoom-in delay-100">
+                <h3>1.5s</h3>
+                <p>Avg Generation Time</p>
             </div>
-        </section>
-
-        <!-- TESTIMONIALS SECTION -->
-        <section class="testimonials">
-            <div class="container">
-                <h2 class="section-title">Loved by Creators</h2>
-                <div class="testimonials__grid">
-                    <article class="testimonial-card">
-                        <blockquote>“Stylo AI is a game-changer for prototyping. I can spin up a high-fidelity landing page from a simple idea in minutes.”</blockquote>
-                        <figure>
-                            <img src="https://ui-avatars.com/api/?name=Sarah+L&background=random" alt="Sarah L.">
-                            <figcaption>
-                                <h4>Sarah L.</h4>
-                                <p>Freelance Developer</p>
-                            </figcaption>
-                        </figure>
-                    </article>
-                    <article class="testimonial-card">
-                        <blockquote>“It's an essential part of our workflow now. We build marketing sites incredibly fast without pulling engineering resources.”</blockquote>
-                        <figure>
-                            <img src="https://ui-avatars.com/api/?name=Mike+R&background=random" alt="Mike R.">
-                            <figcaption>
-                                <h4>Mike R.</h4>
-                                <p>Startup Founder</p>
-                            </figcaption>
-                        </figure>
-                    </article>
-                    <article class="testimonial-card">
-                        <blockquote>“I'm not a coder, but I have a lot of ideas. Stylo AI bridges that gap perfectly. It feels like magic.”</blockquote>
-                        <figure>
-                            <img src="https://ui-avatars.com/api/?name=Emily+C&background=random" alt="Emily C.">
-                            <figcaption>
-                                <h4>Emily C.</h4>
-                                <p>Digital Marketer</p>
-                            </figcaption>
-                        </figure>
-                    </article>
-                </div>
+            <div class="stat-item animate-on-scroll anim-zoom-in delay-200">
+                <h3>99.9%</h3>
+                <p>Uptime Guaranteed</p>
             </div>
-        </section>
-
-        <!-- WHO IT'S FOR -->
-        <section class="who-its-for">
-            <div class="container">
-                <h2 class="section-title">Perfect For...</h2>
-                <div class="who-its-for__grid">
-                    <div class="who-card">
-                        <i class="fas fa-code"></i>
-                        <h3>Developers</h3>
-                        <p>Rapidly scaffold projects and get unstuck with AI.</p>
-                    </div>
-                    <div class="who-card">
-                        <i class="fas fa-lightbulb"></i>
-                        <h3>Entrepreneurs</h3>
-                        <p>Launch landing pages and MVPs instantly.</p>
-                    </div>
-                    <div class="who-card">
-                        <i class="fas fa-bullhorn"></i>
-                        <h3>Marketers</h3>
-                        <p>Create campaign-specific pages independently.</p>
-                    </div>
-                </div>
+            <div class="stat-item animate-on-scroll anim-zoom-in delay-300">
+                <h3>✰✰✰✰</h3> 
+                <h3>4 Star</h3>
+                <p>User Rating</p>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- FAQ SECTION -->
-        <section id="faq" class="faq">
-            <div class="container">
-                <h2 class="section-title">FAQ</h2>
-                <div class="faq__container">
-                    <details class="faq-item">
-                        <summary>Is Stylo AI free?</summary>
-                        <p>Yes, Stylo AI is currently free to use. This includes generating, editing, saving, and deploying websites.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary>Can I export the code?</summary>
-                        <p>Absolutely! The "View Code" feature gives you direct access to the complete HTML, CSS, and JS.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary>Who owns the websites?</summary>
-                        <p>You do. You own 100% of the code and the final website generated with Stylo AI.</p>
-                    </details>
-                </div>
-            </div>
-        </section>
-
-        <!-- FINAL CTA -->
-        <section class="final-cta">
-            <div class="container">
-                <h2>Ready to Build?</h2>
-                <p>No credit card required.</p>
-                <a href="./Project/?modal=new-project-modal" class="btn btn--primary">Create for Free</a>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
+    <!-- FEATURES (Slide Animations) -->
+    <section id="features" class="feature-section">
         <div class="container">
-            <div class="footer__links">
-                <a href="#">Home</a>
-                <a href="./Project/?modal=new-project-modal">Editor</a>
-                <a href="#features">Features</a>
-                <a href="#faq">FAQ</a>
+            <!-- Feature 1: Slide Right -->
+            <div class="feature-split">
+                <div class="feature-text animate-on-scroll anim-slide-right">
+                    <span class="badge">Conversational UI</span>
+                    <h2>Design with Words, <br>Not Code.</h2>
+                    <p>Simply describe what you want. "A minimalist landing page for a coffee shop" or "A dark mode dashboard for crypto trading." Stylo AI understands context, design principles, and modern UI patterns.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> Understands complex requirements</li>
+                        <li><i class="fas fa-check-circle"></i> Generates responsive layouts</li>
+                        <li><i class="fas fa-check-circle"></i> Writes professional copy</li>
+                    </ul>
+                </div>
+                <div class="feature-visual animate-on-scroll anim-slide-left delay-200">
+                    <img src="https://mujtabaalam.vercel.app/editor/assets/videos/Conversational Web Design.gif" alt="Chat Interface">
+                </div>
             </div>
-            <div class="footer__social">
-                <a href="https://github.com" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+
+            <!-- Feature 2: Slide Left (Reversed) -->
+            <div class="feature-split reversed">
+                <div class="feature-text animate-on-scroll anim-slide-left">
+                    <span class="badge">Developer Friendly</span>
+                    <h2>Full Control with <br>AI Code Copilot.</h2>
+                    <p>Don't just get stuck with a template. Open the built-in IDE to tweak HTML, CSS, and JS. Highlight any code block and ask the AI to refactor, debug, or explain it.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> Monaco-based Editor</li>
+                        <li><i class="fas fa-check-circle"></i> Context-aware AI suggestions</li>
+                        <li><i class="fas fa-check-circle"></i> Real-time preview</li>
+                    </ul>
+                </div>
+                <div class="feature-visual animate-on-scroll anim-slide-right delay-200">
+                    <img src="https://mujtabaalam.vercel.app/editor/assets/videos/AI suggestion.gif" alt="Code Editor">
+                </div>
             </div>
-            <p>&copy; 2024 Stylo AI. All rights reserved.</p>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS (Premium Redesign) -->
+    <section id="how-it-works" class="process-section">
+        <!-- Background Glow for Ambiance -->
+        <div class="process-glow"></div>
+
+        <div class="container">
+            <div class="section-header animate-on-scroll anim-fade-up">
+                <span class="badge">Workflow</span>
+                <h2 style="font-size: 2.8rem; margin-bottom: 1rem;">From Prompt to Production</h2>
+                <p style="color: var(--text-muted);">Three simple steps to build your dream website.</p>
+            </div>
+
+            <div class="process-grid">
+                
+                <!-- Step 1 -->
+                <div class="process-card animate-on-scroll anim-fade-up delay-100">
+                    <div class="step-bg-number">01</div>
+                    <div class="icon-box gradient-1">
+                        <i class="fas fa-comment-alt"></i>
+                    </div>
+                    <h3>Describe</h3>
+                    <p>Type your idea in plain English. Be as vague or detailed as you want.</p>
+                </div>
+
+                <!-- Connector Line (Desktop Only) -->
+                <div class="connector animate-on-scroll anim-zoom-in delay-150">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="process-card animate-on-scroll anim-fade-up delay-200">
+                    <div class="step-bg-number">02</div>
+                    <div class="icon-box gradient-2">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h3>Generate</h3>
+                    <p>Our AI writes the code, designs the layout, and builds the UI instantly.</p>
+                </div>
+
+                <!-- Connector Line (Desktop Only) -->
+                <div class="connector animate-on-scroll anim-zoom-in delay-250">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="process-card animate-on-scroll anim-fade-up delay-300">
+                    <div class="step-bg-number">03</div>
+                    <div class="icon-box gradient-3">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Deploy</h3>
+                    <p>Refine with the editor, then push to a live public URL in one click.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- TEMPLATES SECTION (Restored Logic) -->
+    <section id="templates" class="templates animate-on-scroll anim-fade-up" style="display: none;">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 1rem; font-size: 2.5rem;">Community Templates</h2>
+            <p style="text-align: center; margin-bottom: 3rem; color: var(--text-muted);">Start with a pre-made design or build from scratch.</p>
+            
+            <div class="templates__controls">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="template-search" placeholder="Search templates (e.g. 'Portfolio', 'SaaS')...">
+                </div>
+                <div class="category-filters-wrapper">
+                    <div class="category-filters" id="category-filters">
+                        <!-- JS Injected Categories -->
+                    </div>
+                </div>
+            </div>
+            
+            <div id="public-templates-grid" class="templates__grid">
+                <!-- JS Injected Templates -->
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING SECTION -->
+    <section id="pricing" class="pricing-section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2.5rem;" class="animate-on-scroll anim-fade-up">Simple Pricing</h2>
+            
+            <!-- ELITE BIRD OFFER BANNER -->
+            <div class="elite-promo-container animate-on-scroll anim-zoom-in">
+                <div class="elite-promo-content">
+                    <div class="elite-text">
+                        <h3>👑 Elite Bird Access <span class="elite-badge"> <strong>LIMITED OFFER</strong></span></h3>
+                        <p style="margin:0; font-size:0.95rem; color:var(--text-muted);">
+                            Get the <strong>Business Plan (₹1299/mo) completely FREE</strong> for life.<br>
+                            <span style="color:#10b981; font-size:0.85rem;"><i class="fas fa-check-circle"></i> No Credit Card Required</span>
+                        </p>
+                    </div>
+                    <div style="text-align:center;">
+                        <div id="live-slots-count" class="slots-counter">
+                            Checking slots...
+                        </div>
+                        <a href="./Profile/#account" class="btn btn-primary" style="margin-top:10px; background: #FFD700; color: #000; border:none; font-weight:700;">
+                            Claim Now <i class="fas fa-bolt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pricing-grid">
+
+    <!-- FREE PLAN -->
+    <div class="pricing-card animate-on-scroll anim-slide-right">
+        <h3>Free</h3>
+        <div class="price">₹0<span>/mo</span></div>
+        <p style="margin-bottom: 1.5rem;">Perfect for beginners.</p>
+
+        <ul style="text-align: left; list-style: none; margin-bottom: 2rem; color: var(--text-muted);">
+            <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> 3 Projects</li>
+            <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> 3 Collections</li>
+            <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> 20 AI Chats</li>
+            <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> 100MB Storage</li>
+        </ul>
+
+        <a href="Project/?modal=new-project-modal" class="btn btn-secondary" style="width: 100%; justify-content: center;">
+            Start Free
+        </a>
+    </div>
+
+
+    <!-- PRO PLAN -->
+    <div class="pricing-card featured animate-on-scroll anim-zoom-in delay-100">
+        <span class="badge"
+              style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+              background: var(--primary-color); color: white;">
+            Most Popular
+        </span>
+
+        <h3>Pro</h3>
+        <div class="price">₹399<span>/mo</span></div>
+        <p style="margin-bottom: 1.5rem;">For serious creators.</p>
+
+        <ul style="text-align: left; list-style: none; margin-bottom: 2rem; color: var(--text-muted);">
+            <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> 50 Projects</li>
+            <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> 500 AI Chats</li>
+            <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> 2GB Storage</li>
+            <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> Export Code</li>
+        </ul>
+
+        <a href="./Profile/#pricing" class="btn btn-primary" style="width: 100%; justify-content: center;">
+            Upgrade to Pro
+        </a>
+    </div>
+
+
+    <!-- BUSINESS PLAN -->
+    <div class="pricing-card animate-on-scroll anim-slide-left delay-200">
+        <h3>Business</h3>
+        <div class="price">₹1299<span>/mo</span></div>
+        <p style="margin-bottom: 1.5rem;">For teams & agencies.</p>
+
+        <ul style="text-align: left; list-style: none; margin-bottom: 2rem; color: var(--text-muted);">
+            <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> Unlimited Projects</li>
+            <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> Unlimited AI Chats</li>
+            <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> 10GB Storage</li>
+            <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> Full Team Access</li>
+        </ul>
+
+        <a href="./Profile/#pricing" class="btn btn-secondary" style="width: 100%; justify-content: center;">
+            Get Business
+        </a>
+    </div>
+
+</div>
+
+        </div>
+    </section>
+
+    <!-- FAQ SECTION (Updated) -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2.5rem;" class="animate-on-scroll anim-fade-up">Frequently Asked Questions</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                
+                <!-- Q1 -->
+                <details class="faq-item animate-on-scroll anim-fade-up">
+                    <summary>Is Stylo AI completely free to use?</summary>
+                    <p>Yes, Stylo AI offers a robust <strong>Free Forever</strong> plan. You can generate unlimited drafts, use the visual editor, and deploy up to 3 live websites on our subdomains without ever entering a credit card. We believe in letting you build and experiment without barriers. For advanced features like code export and team collaboration, you can upgrade to our Pro plans.</p>
+                </details>
+
+                <!-- Q2 -->
+                <details class="faq-item animate-on-scroll anim-fade-up delay-100">
+                    <summary>Do I need coding skills to build a website?</summary>
+                    <p>Not at all! Stylo AI is designed for everyone. You can build complex, functional websites simply by describing them in plain English (e.g., "Make a portfolio for a photographer"). However, if you <em>are</em> a developer, our built-in Monaco-based code editor and "Ask AI" debugging tools give you granular control to tweak every line of HTML, CSS, and JS manually.</p>
+                </details>
+
+                <!-- Q3 -->
+                <details class="faq-item animate-on-scroll anim-fade-up delay-200">
+                    <summary>Can I export the code and host it elsewhere?</summary>
+                    <p>Absolutely. Unlike other website builders that lock you into their ecosystem, Stylo AI believes in code freedom. With the Pro plan, you can export clean, semantic, and production-ready HTML, CSS, and JavaScript files. You can then host these files on Netlify, Vercel, AWS, or your own private server.</p>
+                </details>
+
+                <!-- Q4 -->
+                <details class="faq-item animate-on-scroll anim-fade-up delay-300">
+                    <summary>Who owns the intellectual property of the site?</summary>
+                    <p>You maintain <strong>100% ownership</strong>. Any website, code, or asset you generate within Stylo AI belongs entirely to you. You are free to use your creations for personal portfolios, commercial business sites, or even client work without any attribution requirements or royalties.</p>
+                </details>
+
+                <!-- Q5 -->
+                <details class="faq-item animate-on-scroll anim-fade-up delay-100">
+                    <summary>What if I am not satisfied with the generated design?</summary>
+                    <p>Stylo AI excels at iteration. If the first result isn't perfect, simply keep chatting with the AI to refine it—change colors, swap layouts, rewrite text, or add new sections instantly. You can also use the "Visual Editor" to drag and drop elements manually, ensuring the final result matches your exact vision.</p>
+                </details>
+
+                <!-- Q6 -->
+                <details class="faq-item animate-on-scroll anim-fade-up delay-200">
+                    <summary>How does the hosting and deployment work?</summary>
+                    <p>We provide instant, one-click deployment. Your sites are hosted on a global CDN (Content Delivery Network) ensuring lightning-fast load times and 99.9% uptime. Every deployed site automatically receives a free SSL certificate (HTTPS) to ensure your visitors' security.</p>
+                </details>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta">
+        <!-- Background Glow Effect -->
+        <div class="cta-glow"></div>
+
+        <div class="container animate-on-scroll anim-zoom-in" style="position: relative; z-index: 2;">
+            
+            <!-- Social Proof Avatars -->
+            <div class="cta-avatars">
+                <img src="https://ui-avatars.com/api/?name=Alex&background=c7d2fe&color=3730a3" alt="User">
+                <img src="https://ui-avatars.com/api/?name=Sarah&background=fbcfe8&color=9d174d" alt="User">
+                <img src="https://ui-avatars.com/api/?name=Mike&background=bbf7d0&color=166534" alt="User">
+                <img src="https://ui-avatars.com/api/?name=Jessica&background=fde68a&color=92400e" alt="User">
+                <span class="avatar-count">20+ Creators</span>
+            </div>
+
+            <h2 style="font-size: 3.5rem; margin-bottom: 1rem; line-height: 1.1;">
+                Ready to build the <span style="background: linear-gradient(to right, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Future?</span>
+            </h2>
+            
+            <p style="max-width: 600px; margin: 0 auto 2.5rem; color: var(--text-muted); font-size: 1.1rem;">
+                Join the fastest-growing community of developers and designers. 
+                Turn your prompt into a deployed website in seconds.
+            </p>
+            
+            <!-- Dual Buttons -->
+            <div class="cta-buttons">
+                <a href="Project/?modal=new-project-modal" class="btn btn-primary" style="padding: 1rem 2.5rem; font-size: 1.1rem;">
+                    <i class="fas fa-bolt"></i> Start Building Free
+                </a>
+                <a href="https://discord.gg/your-link" target="_blank" class="btn btn-secondary" style="padding: 1rem 2.5rem; font-size: 1.1rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                    <i class="fab fa-discord"></i> Join Community
+                </a>
+            </div>
+
+            <!-- Trust Badges -->
+            <div class="trust-badges" style="margin-top: 2rem; display: flex; justify-content: center; gap: 2rem; font-size: 0.9rem; color: var(--text-muted);">
+                <span><i class="fas fa-check-circle" style="color: #10b981;"></i> No Credit Card Req.</span>
+                <span><i class="fas fa-check-circle" style="color: #10b981;"></i> Cancel Anytime</span>
+                <span><i class="fas fa-check-circle" style="color: #10b981;"></i> Free Forever Tier</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer reveal slide-up">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Brand & Newsletter -->
+                <div class="footer-brand">
+                    <a href="#" style="display: flex; align-items: center; gap: 10px; color: white; margin-bottom: 1rem;">
+                        <img src="./assets/Images/logo1.png" alt="Logo" style="height:35px;">
+                        <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.5rem;">Stylo AI</span>
+                    </a>
+                    <p style="margin-bottom: 1.5rem;">The world's most advanced conversational website builder. Turn ideas into production-ready code instantly.</p>
+                    
+                    <!-- New Newsletter Section to make it rich -->
+                    <div class="newsletter-box">
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Stay updated with new features:</p>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="email" placeholder="Enter your email" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: 6px; color: white; width: 100%;">
+                            <button class="btn btn-primary" style="padding: 0.6rem 1rem;"><i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Links (Mapped to Home Sections) -->
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">AI Features</a></li>
+                        <li><a href="#templates">Template Library</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#pricing">Pricing Plans</a></li>
+                        <li><a href="Project/?modal=new-project-modal" style="color: var(--primary-color);">Launch Editor</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources Links (Mapped to Documentation) -->
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="/Documentation/">Full Documentation</a></li>
+                        <li><a href="/Documentation/#quick-start">Quick Start Guide</a></li>
+                        <li><a href="/Documentation/#visual-editor">Visual Editor Guide</a></li>
+                        <li><a href="/Documentation/#exporting-code">Export Code</a></li>
+                        <li><a href="#faq">FAQs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal & Support (Mapped to Legal Docs) -->
+                <div class="footer-col">
+                    <h4>Legal & Support</h4>
+                    <ul>
+                        <li><a href="/Documentation/#privacy-policy">Privacy Policy</a></li>
+                        <li><a href="/Documentation/#terms-and-conditions">Terms of Service</a></li>
+                        <li><a href="/Documentation/#security-best-practices">Security</a></li>
+                        <li><a href="/Documentation/#troubleshooting">Troubleshooting</a></li>
+                        <li><a href="./Profile/">My Account</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="footer-bottom" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <p>&copy; 2026 Stylo AI. All rights reserved.</p>
+                
+                <!-- Social Icons -->
+                <div class="footer-socials" style="display: flex; gap: 1.5rem;">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
         </div>
     </footer>
 

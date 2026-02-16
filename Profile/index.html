@@ -299,17 +299,54 @@
             </section>
 
             <!-- 7. Account Section (No Changes Here) -->
-            <section id="account-section" class="content-section">
-                 <h1>Account Settings</h1>
-                 <p>Manage your account preferences.</p>
-                 <div class="card card--danger">
+<section id="account-section" class="content-section">
+    <h1>Account Settings</h1>
+    
+    <!-- NEW: Early Bird Offer Card -->
+    <!-- Account Settings section ke andar -->
+<div id="offer-card" class="card" style="border-left: 4px solid #6366f1; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), transparent);">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h3>🚀 Early Bird Promotion</h3>
+        <!-- Slots display yahan hoga -->
+        <span id="offer-slots-left" style="background: #6366f1; color: white; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.85rem;">
+            Loading slots...
+        </span>
+    </div>
+
+    <div class="card-body" style="padding: 20px;">
+        <!-- CASE 1: Jinhone claim nahi kiya (Form) -->
+        <div id="offer-form-container">
+            <p>Get <strong>Elite Business access</strong> for FREE (First 20 users only). Claim your spot now!</p>
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Your Professional Title</label>
+                <input type="text" id="offer-title-input" class="form__input" placeholder="e.g. Creative Designer">
+            </div>
+            <button id="claim-offer-btn" class="btn btn--primary" style="margin-top: 15px; width: 100%;">Claim Free Elite Access</button>
+        </div>
+
+        <!-- CASE 2: Jinhone claim kar liya (Reward Info) -->
+        <div id="offer-claimed-container" class="hidden" style="text-align: center; padding: 10px 0;">
+            <div style="font-size: 3rem; margin-bottom: 10px;">🏆</div>
+            <h2 style="color: #6366f1; margin-bottom: 5px;">Elite Early Bird Member</h2>
+            <p style="color: var(--text-light);">You have successfully unlocked all premium features for life!</p>
+            <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.9rem;">
+                <div style="background: rgba(0,255,0,0.1); padding: 10px; border-radius: 8px;">✅ Unlimited Projects</div>
+                <div style="background: rgba(0,255,0,0.1); padding: 10px; border-radius: 8px;">✅ Team Collaboration</div>
+                <div style="background: rgba(0,255,0,0.1); padding: 10px; border-radius: 8px;">✅ Advanced AI Models</div>
+                <div style="background: rgba(0,255,0,0.1); padding: 10px; border-radius: 8px;">✅ Priority Support</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="card card--danger">
                     <h3>Danger Zone</h3>
                     <div>
                         <p>Deleting your account is permanent. All your projects, teams, and billing information will be removed.</p>
                         <button id="delete-account-btn" class="btn btn--danger">Delete My Account</button>
                     </div>
                 </div>
-            </section>
+</section>
             <!-- 8. TEAMS SECTION (NEW) -->
 <section id="teams-section" class="content-section">
     <div class="section-header-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">

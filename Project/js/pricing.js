@@ -102,7 +102,7 @@ async function updateUserPlan(uid, planType, subId) {
         plan: planType,
         subscriptionId: subId,
         subscriptionStatus: 'active',
-        limits: PLAN_LIMITS[planType],
+        limits: PLANS[planType],
         planUpdatedAt: serverTimestamp()
     });
 }

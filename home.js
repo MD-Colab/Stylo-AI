@@ -1,16 +1,116 @@
 // home.js
-import { db } from './firebase-config.js';
-import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js";
+import { db, auth } from './firebase-config.js'; 
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+import { collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js";
 
-// --- STATE, CONSTANTS, & UI ELEMENTS ---
-const CATEGORIES = [
+// --- AUTH STATE LISTENER ---
+const initAuthUI = () => {
+    const loginBtn = document.getElementById('login-btn');
+    const userBox = document.getElementById('user-profile-box');
+    const avatar = document.getElementById('header-avatar');
+    const nameEl = document.getElementById('header-username');
+    const emailEl = document.getElementById('header-email');
+    const logoutBtn = document.getElementById('header-logout');
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            // User is Logged In - Hide Login, Show Profile
+            if(loginBtn) loginBtn.style.display = 'none';
+            if(userBox) userBox.style.display = 'block';
+
+            // 1. Get Basic Data from Auth
+            let finalPhoto = user.photoURL;
+            let finalName = user.displayName || "User";
+
+            // 2. Fetch Latest Data from Firestore (The Fix)
+            try {
+                const userDocRef = doc(db, "users", user.uid);
+                const userSnap = await getDoc(userDocRef);
+                
+                if (userSnap.exists()) {
+                    const userData = userSnap.data();
+                    // Prioritize Firestore data if it exists
+                    if (userData.photoURL) finalPhoto = userData.photoURL;
+                    if (userData.displayName) finalName = userData.displayName;
+                }
+            } catch (err) {
+                console.error("Error fetching user profile:", err);
+            }
+
+            // 3. Update UI
+            if(avatar) {
+                // Use the fetched photo, or fallback to initials
+                avatar.src = finalPhoto || `https://ui-avatars.com/api/?name=${user.email}&background=random`;
+            }
+            
+            if(emailEl) emailEl.textContent = user.email;
+            if(nameEl) nameEl.textContent = finalName;
+
+        } else {
+            // User is Logged Out
+            if(loginBtn) loginBtn.style.display = 'inline-flex';
+            if(userBox) userBox.style.display = 'none';
+        }
+    });
+
+    // Handle Logout
+    if(logoutBtn) {
+        logoutBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                await signOut(auth);
+                window.location.reload();
+            } catch (error) {
+                console.error("Logout failed", error);
+            }
+        });
+    }
+};
+
+// Toggle Menu Function
+window.toggleProfileMenu = () => {
+    const menu = document.getElementById('profile-dropdown');
+    if(menu) menu.classList.toggle('active');
+};
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    const userBox = document.getElementById('user-profile-box');
+    const menu = document.getElementById('profile-dropdown');
+    if (userBox && !userBox.contains(e.target) && menu && menu.classList.contains('active')) {
+        menu.classList.remove('active');
+    }
+});
+
+// --- ANIMATION OBSERVER LOGIC ---
+const initScrollAnimations = () => {
+    const observerOptions = {
+        threshold: 0.15, // Trigger when 15% of element is visible
+        rootMargin: "0px 0px -50px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                // Optional: Stop observing once animated
+                // observer.unobserve(entry.target); 
+            }
+        });
+    }, observerOptions);
+
+    // Observe all elements with .animate-on-scroll class
+    const elements = document.querySelectorAll('.animate-on-scroll');
+    elements.forEach(el => observer.observe(el));
+};
+
+// --- TEMPLATE LOGIC (Restored from your original file) ---
+let allTemplates = [];
+let templatesInitialized = false;const CATEGORIES = [
     'All', 'Portfolio', 'AI Tools', 'E-commerce', 'Business', 
     'Marketing & Sales', 'Forms & Surveys', 'Blog & Content', 'Education', 
     'Technology', 'Real Estate', 'Health & Fitness', 'Food & Drink', 'Events', 'Other'
 ];
-
-let allTemplates = [];
-let templatesInitialized = false;
 let currentCategory = 'All';
 let currentSearchTerm = '';
 
@@ -19,18 +119,13 @@ const searchInput = document.getElementById('template-search');
 const categoriesContainer = document.getElementById('category-filters');
 const showTemplatesBtn = document.getElementById('show-templates-btn');
 const navTemplatesLink = document.getElementById('nav-templates-link');
-const mobileNavTemplatesLink = document.getElementById('mobile-nav-templates-link'); // Added for mobile
+const mobileNavTemplatesLink = document.getElementById('mobile-nav-templates-link');
 const templatesSection = document.getElementById('templates');
 
-// Mobile Menu Elements
-const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-const mobileNav = document.querySelector('.mobile-nav');
-const mobileLinks = document.querySelectorAll('.mobile-link, .mobile-cta');
-
-// --- "AI" CATEGORIZATION LOGIC ---
+// --- CATEGORIZATION LOGIC ---
 const determineCategory = (name) => {
     const n = name.toLowerCase();
-    if (n.includes('form') || n.includes('survey') || n.includes('inquiry') || n.includes('registration')) return 'Forms & Surveys';
+    if (n.includes('form') || n.includes('survey') || n.includes('inquiry')) return 'Forms & Surveys';
     if (n.includes('portfolio') || n.includes('resume') || n.includes('cv') || n.includes('bio')) return 'Portfolio';
     if (n.includes(' ai') || n.includes('advisor') || n.includes('gpt')) return 'AI Tools';
     if (n.includes('shop') || n.includes('store') || n.includes('commerce') || n.includes('cart')) return 'E-commerce';
@@ -46,28 +141,31 @@ const determineCategory = (name) => {
     return 'Other';
 };
 
-// --- RENDERING FUNCTIONS ---
 const renderTemplates = (templatesToRender) => {
     if (!gridEl) return;
     if (templatesToRender.length === 0) {
-        gridEl.innerHTML = `<div class="templates-empty"><i class="fas fa-search"></i><p>No templates found matching your criteria.</p></div>`;
+        gridEl.innerHTML = `<div class="templates-empty" style="color:var(--text-muted); text-align:center;"><p>No templates found.</p></div>`;
         return;
     }
-    const templatesHTML = templatesToRender.map(t => {
-        const placeholderImage = 'assets/Images/logo1.png'; // Fallback
+    const templatesHTML = templatesToRender.map((t, index) => {
+        const placeholderImage = 'assets/Images/logo1.png';
         let imageUrl = t.data.thumbnailUrl || placeholderImage;
         if (imageUrl.includes('cloudinary')) {
             imageUrl = imageUrl.replace('/upload/', '/upload/w_400,c_fill,q_auto/');
         }
+        // Add animation classes to cards
         return `
-            <div class="template-card">
+            <div class="template-card animate-on-scroll anim-zoom-in" style="transition-delay: ${index * 50}ms">
                 <img src="${imageUrl}" alt="${t.data.name}" loading="lazy">
                 <h3>${t.data.name}</h3>
-                <a href="Project/?project=${t.id}" class="btn btn--secondary">Open in Editor</a>
+                <a href="Project/?project=${t.id}" class="btn btn-secondary">Open in Editor</a>
             </div>
         `;
     }).join('');
     gridEl.innerHTML = templatesHTML;
+    
+    // Re-initialize observer for new elements
+    initScrollAnimations();
 };
 
 const renderCategoryFilters = () => {
@@ -80,7 +178,6 @@ const renderCategoryFilters = () => {
     categoriesContainer.innerHTML = buttonsHTML;
 };
 
-// --- CORE LOGIC ---
 const filterAndRender = () => {
     const term = currentSearchTerm.toLowerCase();
     const filtered = allTemplates.filter(t => {
@@ -95,17 +192,14 @@ const initializeTemplates = async () => {
     if (!gridEl || templatesInitialized) return;
     templatesInitialized = true;
 
-    gridEl.innerHTML = `<div class="templates-loading"><div class="spinner"></div><p>Loading community templates...</p></div>`;
+    gridEl.innerHTML = `<div class="templates-loading" style="text-align:center; color:white;"><div class="spinner"></div><p>Loading templates...</p></div>`;
 
     try {
-        const q = query(
-            collection(db, 'ai_templates'),
-            where("isPublic", "==", true)
-        );
+        const q = query(collection(db, 'ai_templates'), where("isPublic", "==", true));
         const querySnapshot = await getDocs(q);
         
         if (querySnapshot.empty) {
-            gridEl.innerHTML = `<div class="templates-empty"><i class="fas fa-folder-open"></i><p>No public templates available yet.</p></div>`;
+            gridEl.innerHTML = `<div class="templates-empty"><p>No public templates yet.</p></div>`;
             return;
         }
 
@@ -114,38 +208,101 @@ const initializeTemplates = async () => {
             return { id: doc.id, data: data, derivedCategory: determineCategory(data.name || '') };
         });
 
-        // Shuffle
-        for (let i = templatesFromDB.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [templatesFromDB[i], templatesFromDB[j]] = [templatesFromDB[j], templatesFromDB[i]];
-        }
         allTemplates = templatesFromDB;
-
         renderCategoryFilters();
         renderTemplates(allTemplates);
     } catch (error) {
         console.error("Error loading templates:", error);
-        gridEl.innerHTML = `<div class="templates-empty"><p style="color: #E53E3E;">Error loading templates.</p></div>`;
+        gridEl.innerHTML = `<div class="templates-empty"><p style="color: #ec4899;">Error loading templates.</p></div>`;
     }
 };
 
-// --- EVENT LISTENERS ---
 const handleShowTemplatesClick = (e) => {
     e.preventDefault();
     if (templatesSection) {
         templatesSection.style.display = 'block';
+        setTimeout(() => templatesSection.classList.add('is-visible'), 10);
         templatesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         initializeTemplates();
     }
 };
+// ... existing code ...
 
+// --- ELITE SLOT CHECKER ---
+const checkEliteSlots = async () => {
+    const counterEl = document.getElementById('live-slots-count');
+    if (!counterEl) return;
+
+    try {
+        // Fetching from settings/offers (Global counter)
+        const offerRef = doc(db, "settings", "offers");
+        const snap = await getDoc(offerRef);
+
+        if (snap.exists()) {
+            const data = snap.data();
+            const claimed = data.claimedCount || 0;
+            const max = data.maxSlots || 20;
+            const remaining = Math.max(0, max - claimed);
+
+            if (remaining > 0) {
+                counterEl.innerHTML = `🔥 Only <span>${remaining}</span> / ${max} Spots Left`;
+            } else {
+                counterEl.innerHTML = `❌ Offer Sold Out`;
+                counterEl.style.color = "#94a3b8"; // Grey out
+                const btn = counterEl.nextElementSibling; // The Claim Button
+                if(btn) {
+                    btn.classList.add('btn-secondary');
+                    btn.classList.remove('btn-primary');
+                    btn.textContent = "Join Waitlist";
+                    btn.href = "#";
+                }
+            }
+        } else {
+            // Fallback if DB doc doesn't exist yet
+            counterEl.innerHTML = `🔥 Only <span>20</span> / 20 Spots Left`;
+        }
+    } catch (e) {
+        console.error("Error fetching slots:", e);
+        counterEl.innerHTML = `🔥 Limited Spots Available`;
+    }
+};
+
+
+// --- INIT ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Template toggles
+    // 1. Start Animations
+    initScrollAnimations();
+    checkEliteSlots();
+    initAuthUI();
+
+    // 2. Mobile Menu Logic
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const mobileNav = document.querySelector('.mobile-nav');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    if (mobileMenuBtn && mobileNav) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileNav.classList.toggle('open');
+            const icon = mobileMenuBtn.querySelector('i');
+            if(mobileNav.classList.contains('open')) {
+                icon.classList.remove('fa-bars'); icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times'); icon.classList.add('fa-bars');
+            }
+        });
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.remove('open');
+                mobileMenuBtn.querySelector('i').className = 'fas fa-bars';
+            });
+        });
+    }
+
+    // 3. Template Listeners
     if (showTemplatesBtn) showTemplatesBtn.addEventListener('click', handleShowTemplatesClick);
     if (navTemplatesLink) navTemplatesLink.addEventListener('click', handleShowTemplatesClick);
     if (mobileNavTemplatesLink) mobileNavTemplatesLink.addEventListener('click', handleShowTemplatesClick);
 
-    // Search
     if (searchInput) {
         let debounceTimer;
         searchInput.addEventListener('input', () => {
@@ -157,7 +314,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Category Filters
     if (categoriesContainer) {
         categoriesContainer.addEventListener('click', (e) => {
             if (!e.target.matches('.filter-btn')) return;
@@ -167,26 +323,5 @@ document.addEventListener('DOMContentLoaded', () => {
             filterAndRender();
         });
     }
-
-    // --- MOBILE MENU TOGGLE LOGIC ---
-    if (mobileMenuBtn && mobileNav) {
-        mobileMenuBtn.addEventListener('click', () => {
-            const isOpen = mobileNav.classList.contains('open');
-            if (isOpen) {
-                mobileNav.classList.remove('open');
-                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            } else {
-                mobileNav.classList.add('open');
-                mobileMenuBtn.innerHTML = '<i class="fas fa-times"></i>';
-            }
-        });
-
-        // Close menu when a link is clicked
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileNav.classList.remove('open');
-                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            });
-        });
-    }
+    
 });

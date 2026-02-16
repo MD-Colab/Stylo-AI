@@ -45,6 +45,10 @@ const renderDashboard = () => {
     renderImagesSection();
     renderDatabasesSection();
     updatePricingUI();
+    setTimeout(() => {
+        updatePricingUI();
+    }, 100);
+
     
     // Manage Subscription Button Visibility
     const cancelBtn = $('#open-cancel-modal-btn');
@@ -53,6 +57,10 @@ const renderDashboard = () => {
     } else {
         cancelBtn?.classList.add('hidden');
     }
+      import('./modules/section-account.js').then(m => {
+        m.checkOfferStatus();
+    });
+
 };
 
 /**
