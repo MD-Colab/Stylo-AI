@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stylo AI Documentation</title>
+    <link rel="icon" href="../assets/Images/logo1.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <img src="../assets/Images/logo1.png" alt="Stylo AI Logo" class="logo-img">
+            <h1>Stylo AI Docs</h1>
+        </div>
+        <div class="header-actions">
+            <a href="../" class="btn btn-secondary">Back to Stylo AI</a>
+            <div class="theme-switcher">
+                <i class="fas fa-sun"></i>
+                <label class="switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider"></span>
+                </label>
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <input type="search" id="search-input" placeholder="Search documentation...">
+            </div>
+            <nav class="sidebar-nav" id="sidebar-nav">
+                <div class="nav-group">
+                    <h3 class="nav-title">Getting Started</h3>
+                    <ul>
+                        <li><a href="#introduction" class="nav-link active">Introduction</a></li>
+                        <li><a href="#quick-start" class="nav-link">Quick Start Guide</a></li>
+                        <li><a href="#account-setup" class="nav-link">Account Setup</a></li>
+                        <li><a href="#understanding-the-ui" class="nav-link">Understanding the UI</a></li>
+                    </ul>
+                </div>
+                <div class="nav-group">
+                    <h3 class="nav-title">Core Features</h3>
+                    <ul>
+                        <li><a href="#ai-chat" class="nav-link">The AI Chat</a></li>
+                        <li><a href="#generating-websites" class="nav-link">Generating Websites</a></li>
+                        <li><a href="#editing-refining" class="nav-link">Editing & Refinining</a></li>
+                        <li><a href="#code-editor" class="nav-link">AI Code Editor</a></li>
+                        <li><a href="#saving-projects" class="nav-link">Saving Projects</a></li>
+                        <li><a href="#version-history" class="nav-link">Version History</a></li>
+                        <li><a href="#deployment" class="nav-link">Deployment</a></li>
+                    </ul>
+                </div>
+                <div class="nav-group">
+                    <h3 class="nav-title">Assets & Data</h3>
+                    <ul>
+                        <li><a href="#project-images" class="nav-link">Project Images</a></li>
+                        <li><a href="#project-databases" class="nav-link">Project Databases</a></li>
+                        <li><a href="#using-mentions" class="nav-link">Using @ and # Mentions</a></li>
+                        <li><a href="#form-handling" class="nav-link">Form Handling</a></li>
+                        <li><a href="#creating-ecommerce" class="nav-link">Creating E-commerce Sites</a></li>
+                    </ul>
+                </div>
+                <div class="nav-group">
+                    <h3 class="nav-title">Collaboration</h3>
+                    <ul>
+                        <li><a href="#workspaces-and-teams" class="nav-link">Workspaces & Teams</a></li>
+                        <li><a href="#sharing-projects" class="nav-link">Sharing Projects</a></li>
+                        <li><a href="#user-roles" class="nav-link">User Roles & Permissions</a></li>
+                        <li><a href="#real-time-editing" class="nav-link">Real-time Editing</a></li>
+                    </ul>
+                </div>
+                 <div class="nav-group">
+                    <h3 class="nav-title">Advanced Topics</h3>
+                    <ul>
+                        <li><a href="#visual-editor" class="nav-link">The Visual "Drag & Drop" Editor</a></li>
+                        <li><a href="#project-wizard" class="nav-link">The Project Wizard</a></li>
+                        <li><a href="#pricing-and-billing" class="nav-link">Pricing & Billing</a></li>
+                        <li><a href="#custom-prompts" class="nav-link">Custom AI Personas</a></li>
+                        <li><a href="#exporting-code" class="nav-link">Exporting Your Code</a></li>
+                        <li><a href="#troubleshooting" class="nav-link">Troubleshooting</a></li>
+                        <!--<li><a href="#api-keys" class="nav-link">API Keys & Integrations</a></li>-->
+                        <li><a href="#security-best-practices" class="nav-link">Security Best Practices</a></li>
+                    </ul>
+                </div>
+                <div class="nav-group">
+                    <h3 class="nav-title">Legal</h3>
+                    <ul>
+                        <li><a href="#terms-and-conditions" class="nav-link">Terms & Conditions</a></li>
+                        <li><a href="#privacy-policy" class="nav-link">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="content" id="content-area">
+            <!-- Dynamic content is rendered here by script.js -->
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Stylo AI. All Rights Reserved.</p>
+        <p>
+            A Production of <a href="https://mdcolab.vercel.app" target="_blank" rel="noopener noreferrer">MD Colab</a> | 
+            Developed by <a href="https://mujtabaalam.vercel.app" target="_blank" rel="noopener noreferrer">Mujtaba Alam</a>
+        </p>
+    </footer>
+    
+    <script type="module" src="script.js"></script>
+</body>
+</html>

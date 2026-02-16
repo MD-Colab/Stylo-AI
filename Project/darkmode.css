@@ -1,0 +1,210 @@
+/* darkmode.css */
+
+/* --- Dark Theme Variables --- */
+[data-theme="dark"] {
+    /* Re-mapping Core Colors to Dark Shades */
+    --primary-hue: 242;
+    --primary-saturation: 60%;
+    --primary-color: hsl(var(--primary-hue), var(--primary-saturation), 65%); /* Lighter purple for contrast */
+    --primary-dark: hsl(var(--primary-hue), var(--primary-saturation), 55%);
+    --primary-light: rgba(99, 102, 241, 0.15);
+
+    --background-color: #0f172a; /* Slate 900 */
+    --surface-color: #1e293b;    /* Slate 800 */
+    
+    --text-color: #f1f5f9;       /* Slate 100 */
+    --text-light: #94a3b8;       /* Slate 400 */
+    
+    --border-color: #334155;     /* Slate 700 */
+    --border-color-light: #1e293b;
+
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Global Overrides --- */
+[data-theme="dark"] body {
+    background-image: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+    color: var(--text-color);
+}
+
+/* --- Inputs & Forms --- */
+[data-theme="dark"] .form__input, 
+[data-theme="dark"] textarea, 
+[data-theme="dark"] select {
+    background-color: #020617;
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .form__input:focus, 
+[data-theme="dark"] textarea:focus {
+    border-color: var(--primary-color);
+    background-color: #0f172a;
+}
+
+/* --- Chat Interface --- */
+[data-theme="dark"] .chat-container, 
+[data-theme="dark"] .chat-history {
+    background-color: #1e293b;
+    background-image: radial-gradient(#334155 1px, transparent 1px); /* Darker dots */
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .chat-input-area,
+[data-theme="dark"] .chat-input-wrapper {
+    background-color: #1e293b;
+    border-top-color: var(--border-color);
+}
+/* Dark Mode support */
+[data-theme="dark"] .attachment-preview {
+    background-color: #1e293b;
+    color: #a5b4fc;
+}
+
+[data-theme="dark"] .send {
+    background-color: #0f172a;
+}
+
+/* AI Message Bubbles in Dark Mode */
+[data-theme="dark"] .ai-message {
+    background-color: #334155;
+    border-color: #475569;
+    color: #f8fafc;
+}
+/* Adjust for Dark Mode */
+[data-theme="dark"] .mention-pill--image {
+    background-color: rgba(99, 102, 241, 0.2);
+    color: #a5b4fc;
+    border-color: rgba(99, 102, 241, 0.4);
+}
+[data-theme="dark"] .mention-pill--db {
+    background-color: rgba(34, 197, 94, 0.2);
+    color: #86efac;
+    border-color: rgba(34, 197, 94, 0.4);
+}
+/* --- Headers & Panels --- */
+[data-theme="dark"] .header,
+[data-theme="dark"] .control-panel,
+[data-theme="dark"] .saved-templates,
+[data-theme="dark"] .modal__content {
+    background-color: #1e293b;
+    border-color: var(--border-color);
+    
+}
+
+/* --- Preview Area --- */
+[data-theme="dark"] .preview-container {
+    background-color: #0f172a;
+    /* Dark grid pattern */
+    background-image: radial-gradient(circle at 1.5px 1.5px, #334155 1px, transparent 0);
+    border-color: var(--border-color);
+}
+
+/* --- Dropdowns & Menus --- */
+[data-theme="dark"] .user-dropdown,
+[data-theme="dark"] .project-dropdown-menu,
+[data-theme="dark"] .custom-context-menu,
+[data-theme="dark"] .mention-popup {
+    background-color: #1e293b;
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .user-dropdown__item:hover,
+[data-theme="dark"] .project-dropdown-item:hover,
+[data-theme="dark"] .mention-item:hover,
+[data-theme="dark"] .custom-context-menu li:hover {
+    background-color: #334155;
+}
+[data-theme="dark"] #header-project-search {
+    background-color: #0f172a; /* Match dark inputs */
+    border-color: #334155;
+}
+
+/* --- Buttons --- */
+[data-theme="dark"] .btn--secondary {
+    background-color: #334155;
+    border-color: #475569;
+    color: white;
+}
+[data-theme="dark"] .btn--secondary:hover {
+    background-color: #475569;
+}
+
+[data-theme="dark"] .btn-icon:hover {
+    background-color: #334155;
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .responsive-toggles {
+    background-color: #0f172a;
+}
+[data-theme="dark"] .responsive-toggles .btn-icon.active {
+    background-color: #334155;
+    color: var(--primary-color);
+}
+
+/* --- Project Cards --- */
+[data-theme="dark"] .template-card {
+    background-color: #1e293b;
+    border-color: var(--border-color);
+}
+[data-theme="dark"] .template-card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
+}
+
+/* --- Code Blocks in Chat --- */
+[data-theme="dark"] .chat-embedded-code,
+[data-theme="dark"] .ask-code-block {
+    border-color: #000;
+    background-color: #0d1117;
+}
+[data-theme="dark"] .chat-code-header,
+[data-theme="dark"] .ask-code-header {
+    background-color: #161b22;
+    border-bottom-color: #30363d;
+}
+[data-theme="dark"] .header-btn-group{
+  background: #3c5e7f;
+}
+[data-theme="dark"] .btn-header-deploy.secondary{
+  background: #2789dd;
+}
+
+/* --- Scrollbars --- */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: #475569;
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* --- Firestore Data Viewer --- */
+[data-theme="dark"] .firestore-header,
+[data-theme="dark"] .firestore-pane,
+[data-theme="dark"] .firestore-data-viewer {
+    background-color: var(--surface-color);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+[data-theme="dark"] .data-viewer__value {
+    background-color: #0f172a;
+    border-color: var(--border-color);
+}
+/* Notification Variants (Dark Mode Overrides) */
+[data-theme="dark"] .notify-success {
+    background-color: #064e3b !important; /* Dark Green */
+    border-color: #059669 !important;
+    color: #ecfdf5 !important; /* Light Greenish White */
+}
+
+[data-theme="dark"] .notify-error {
+    background-color: #7f1d1d !important; /* Dark Red */
+    border-color: #dc2626 !important;
+    color: #fef2f2 !important; /* Light Reddish White */
+}

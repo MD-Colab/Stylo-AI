@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | Stylo AI</title>
+    <link rel="icon" href="assets/Images/logo1.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../Project/style.css">
+    <link rel="stylesheet" href="../Project/darkmode.css">
+    <link rel="stylesheet" href="./profile.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+
+    <header class="header">
+    <div class="logo" onclick="window.location.href='../index.html'">
+        <img src="../assets/Images/logo1.png" alt="logo" width="110px">
+    </div>
+    <div class="header__right">
+        <div id="auth-container">
+            <button id="login-btn" class="btn btn--secondary"><i class="fab fa-google"></i> Sign In</button>
+            <div id="user-info" class="user-profile hidden">
+                <div class="user-profile__trigger">
+                    <span id="user-email"></span>
+                    <img id="user-avatar" src="../assets/avatar/A1.jpeg" alt="User Avatar">
+                </div>
+                <div class="user-dropdown">
+                    <a href="../Project/" class="user-dropdown__item"><i class="fas fa-home"></i>Home</a>
+                    <button id="logout-btn" class="user-dropdown__item"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <main class="profile-container">
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="profile-sidebar">
+            <div class="profile-card profile-card--sidebar">
+                 <div class="profile-picture-container">
+                    <img id="profile-picture-display" src="../assets/avatar/A2.jpeg" class="profile-picture" alt="User Avatar">
+                </div>
+                <h2 id="display-name-header">[User Name]</h2>
+                <p id="email-display" class="text-light">[user@email.com]</p>
+            </div>
+            <nav class="profile-nav">
+                <a href="#profile" class="profile-nav-link active" data-target="profile-section"><i class="fas fa-user-edit"></i> Profile</a>
+                <a href="#pricing" class="profile-nav-link" data-target="pricing-section"><i class="fas fa-credit-card"></i> Pricing & Billing</a>
+                <a href="#teams" class="profile-nav-link" data-target="teams-section"><i class="fas fa-users"></i> Teams & Collab</a>
+                <a href="#images" class="profile-nav-link" data-target="images-section"><i class="fas fa-images"></i> My Images</a>
+                <a href="#databases" class="profile-nav-link" data-target="databases-section"><i class="fas fa-database"></i> Databases</a>
+                <!--<a href="#api" class="profile-nav-link" data-target="api-section"><i class="fas fa-key"></i> API Keys</a>-->
+                <a href="#account" class="profile-nav-link" data-target="account-section"><i class="fas fa-cog"></i> Account</a>
+            </nav>
+        </aside>
+
+        <!-- CONTENT AREA -->
+        <div class="profile-content">
+            <!-- 1. Profile Section -->
+            <section id="profile-section" class="content-section active">
+                <h1>Public Profile</h1>
+                <p>This information may be displayed publicly.</p>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Profile Information</h3>
+                        <button id="edit-profile-btn" class="btn btn--secondary btn--sm"><i class="fas fa-pencil-alt"></i> Edit Profile</button>
+                    </div>
+                    <div id="profile-display-view" class="profile-info-grid">
+                        <div class="profile-info-row profile-info-row--picture">
+                            <label>Profile Picture</label>
+                            <img id="profile-picture-view" src="../assets/avatar/A3.jpeg" class="profile-picture profile-picture--small" alt="Profile Picture">
+                        </div>
+                        <div class="profile-info-row">
+                            <label>Display Name</label>
+                            <p id="display-name-view">[User Name]</p>
+                        </div>
+                        <div class="profile-info-row">
+                            <label>Bio</label>
+                            <p id="bio-view" class="text-light">[Bio not set]</p>
+                        </div>
+                        <div class="profile-info-row">
+                            <label>Email Address</label>
+                            <p id="email-view">[user@email.com]</p>
+                        </div>
+                        <div class="profile-info-row">
+                            <label>Age</label>
+                            <p id="age-view">[Not set]</p>
+                        </div>
+                        <div class="profile-info-row">
+                            <label>Gender</label>
+                            <p id="gender-view">[Not set]</p>
+                        </div>
+                        <div class="profile-info-row">
+                            <label>Position / Title</label>
+                            <p id="position-view">[Not set]</p>
+                        </div>
+                        <div class="profile-info-row">
+                            <label>Website</label>
+                            <p id="website-view">[Not set]</p>
+                        </div>
+                         <div class="profile-info-row">
+                            <label>Location</label>
+                            <p id="location-view">[Not set]</p>
+                        </div>
+                    </div>
+                    <form id="profile-form" class="hidden">
+                        <div class="form-group-horizontal" style="align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+                            <label>Profile Picture</label>
+                            <div class="profile-picture-uploader">
+                                <img id="profile-picture-display-form" src="../assets/avatar/A4.jpeg" class="profile-picture profile-picture--small" alt="Profile Picture">
+                                <button type="button" id="choose-avatar-form-btn" class="btn btn--secondary">Choose Avatar</button>
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="display-name-input">Display Name</label>
+                                <input type="text" id="display-name-input" class="form__input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email-input">Email</label>
+                                <input type="email" id="email-input" class="form__input" readonly>
+                                <small class="form-helper-text">Email address cannot be changed.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="age-input">Age</label>
+                                <input type="number" id="age-input" class="form__input" min="13">
+                            </div>
+                            <div class="form-group">
+                                <label for="gender-select">Gender</label>
+                                <select id="gender-select" class="form__input">
+                                    <option value="Prefer not to say">Prefer not to say</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                             <div class="form-group">
+                                <label for="position-input">Position / Title</label>
+                                <input type="text" id="position-input" class="form__input" placeholder="e.g., Software Engineer">
+                            </div>
+                             <div class="form-group">
+                                <label for="location-input">Location</label>
+                                <input type="text" id="location-input" class="form__input" placeholder="e.g., San Francisco, CA">
+                            </div>
+                            <div class="form-group form-group-span-2">
+                                <label for="website-input">Website</label>
+                                <input type="url" id="website-input" class="form__input" placeholder="https://example.com">
+                            </div>
+                            <div class="form-group form-group-span-2">
+                                <label for="bio-input">Bio</label>
+                                <textarea id="bio-input" class="form__input" rows="3" placeholder="Tell us a bit about yourself..."></textarea>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                             <span id="profile-save-status"></span>
+                             <button type="button" id="cancel-edit-btn" class="btn btn--secondary">Cancel</button>
+                            <button type="submit" id="save-profile-btn" class="btn btn--primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 3. Pricing & Billing Section -->
+<section id="pricing-section" class="content-section">
+    <h1>Pricing & Plans (INR)</h1>
+    <p>Flexible plans for every stage of your journey.</p>
+    <button id="open-cancel-modal-btn" class="btn btn--danger btn--sm hidden">Cancel Subscription</button>
+    <div class="pricing-grid">
+        <!-- 1. FREE -->
+        <div class="pricing-card" id="card-free">
+            <div class="pricing-header"><h3>Free</h3><h2 class="price">₹0<span>/mo</span></h2></div>
+            <ul class="features-list">
+                <li><i class="fas fa-check"></i> 3 Projects</li>
+                <li><i class="fas fa-check"></i> 3 Collections</li>
+                <li><i class="fas fa-check"></i> 3 Deployments</li>
+                <li><i class="fas fa-check"></i> 20 Chat Msgs</li>
+                <li><i class="fas fa-check"></i> 30 Max Saves</li>
+                <li><i class="fas fa-hdd"></i> 100MB Storage</li>
+                <li><i class="fas fa-robot"></i> Basic AI</li>
+                <li class="disabled"><i class="fas fa-times"></i> Export Code</li>
+                <li class="disabled"><i class="fas fa-times"></i> Team Access</li>
+            </ul>
+            <button class="btn btn--secondary full-width" disabled>Current Plan</button>
+        </div>
+
+        <!-- 2. STARTUP -->
+        <div class="pricing-card" id="card-startup">
+            <div class="pricing-header"><h3>Startup</h3><h2 class="price">₹199<span>/mo</span></h2></div>
+            <ul class="features-list">
+                <li><i class="fas fa-check"></i> 10 Projects</li>
+                <li><i class="fas fa-check"></i> 11 Collections</li>
+                <li><i class="fas fa-check"></i> 9 Deployments</li>
+                <li><i class="fas fa-check"></i> 200 Chat Msgs</li>
+                <li><i class="fas fa-check"></i> 120 Max Saves</li>
+                <li><i class="fas fa-hdd"></i> 500MB Storage</li>
+                <li><i class="fas fa-robot"></i> Standard AI</li>
+                <li><i class="fas fa-check"></i> <strong>Export Code</strong></li>
+                <li class="disabled"><i class="fas fa-times"></i> Team Access</li>
+            </ul>
+            <button id="btn-startup" class="btn btn--primary full-width">Upgrade</button>
+        </div>
+
+        <!-- 3. PRO -->
+        <div class="pricing-card featured" id="card-pro">
+            <div class="popular-tag">Popular</div>
+            <div class="pricing-header"><h3>Pro</h3><h2 class="price">₹399<span>/mo</span></h2></div>
+            <ul class="features-list">
+                <li><i class="fas fa-check"></i> 50 Projects</li>
+                <li><i class="fas fa-check"></i> 30 Collections</li>
+                <li><i class="fas fa-check"></i> 50 Deployments</li>
+                <li><i class="fas fa-check"></i> 500 Chat Msgs</li>
+                <li><i class="fas fa-check"></i> 1000 Max Saves</li>
+                <li><i class="fas fa-hdd"></i> 2GB Storage</li>
+                <li><i class="fas fa-robot"></i> <strong>Advanced AI</strong></li>
+                <li><i class="fas fa-check"></i> Export Code</li>
+                <li class="disabled"><i class="fas fa-times"></i> Team Access</li>
+            </ul>
+            <button id="btn-pro" class="btn btn--primary full-width">Upgrade</button>
+        </div>
+
+        <!-- 4. PRE-BUSINESS -->
+        <div class="pricing-card" id="card-prebusiness">
+            <div class="pricing-header"><h3>Pre-Biz</h3><h2 class="price">₹799<span>/mo</span></h2></div>
+            <ul class="features-list">
+                <li><i class="fas fa-check"></i> 100 Projects</li>
+                <li><i class="fas fa-check"></i> 25 Collections</li>
+                <li><i class="fas fa-check"></i> 100 Deployments</li>
+                <li><i class="fas fa-check"></i> 2000 Chat Msgs</li>
+                <li><i class="fas fa-check"></i> 5000 Max Saves</li>
+                <li><i class="fas fa-hdd"></i> 5GB Storage</li>
+                <li><i class="fas fa-robot"></i> Advanced AI</li>
+                <li><i class="fas fa-check"></i> Export Code</li>
+                <li><i class="fas fa-users"></i> <strong>Add Team</strong></li>
+            </ul>
+            <button id="btn-prebiz" class="btn btn--secondary full-width">Upgrade</button>
+        </div>
+
+        <!-- 5. BUSINESS -->
+        <div class="pricing-card" id="card-business">
+            <div class="pricing-header"><h3>Business</h3><h2 class="price">₹1299<span>/mo</span></h2></div>
+            <ul class="features-list">
+                <li><i class="fas fa-infinity"></i> Unlimited Projects</li>
+                <li><i class="fas fa-infinity"></i> Unlimited DB</li>
+                <li><i class="fas fa-infinity"></i> Unlimited Deploys</li>
+                <li><i class="fas fa-infinity"></i> Unlimited Chat</li>
+                <li><i class="fas fa-infinity"></i> Unlimited Saves</li>
+                <li><i class="fas fa-hdd"></i> 10GB Storage</li>
+                <li><i class="fas fa-robot"></i> Advanced AI</li>
+                <li><i class="fas fa-check"></i> Export Code</li>
+                <li><i class="fas fa-users"></i> <strong>Full Team Access</strong></li>
+            </ul>
+            <button id="btn-biz" class="btn btn--secondary full-width">Upgrade</button>
+        </div>
+    </div>
+</section>
+            
+            <!-- 4. My Images Section -->
+            <section id="images-section" class="content-section">
+                <h1>My Images</h1>
+                <p>A gallery of all images from across all your projects.</p>
+                <div class="card">
+                    <h3>Image Gallery</h3>
+                    <div id="image-gallery-container">
+                        <!-- JS will render images, a loader, or an empty state here -->
+                    </div>
+                </div>
+            </section>
+             <!-- 5. Databases Section -->
+    <section id="databases-section" class="content-section">
+        <h1>My Databases</h1>
+        <p>Manage collections from all your projects in one place.</p>
+        <div class="card">
+            <div class="card-header">
+                <h3>All Collections</h3>
+                <!-- Global Create Button (requires selecting project later, handled via modal logic) -->
+                <button id="global-create-collection-btn" class="btn btn--secondary btn--sm"><i class="fas fa-plus"></i> New Collection</button>
+            </div>
+            <div id="database-gallery-container">
+                <!-- JS will render collections here -->
+            </div>
+        </div>
+    </section>
+            
+            <!-- 6. API Section (No Changes Here) -->
+            <section id="api-section" class="content-section">
+                <h1>API Keys</h1>
+                <p>Manage API keys for integrations and programmatic access.</p>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Your Personal Access Tokens</h3>
+                        <button id="generate-api-key-btn" class="btn btn--secondary btn--sm"><i class="fas fa-plus"></i> Generate New Key</button>
+                    </div>
+                    <div id="api-keys-list"></div>
+                </div>
+            </section>
+
+            <!-- 7. Account Section (No Changes Here) -->
+            <section id="account-section" class="content-section">
+                 <h1>Account Settings</h1>
+                 <p>Manage your account preferences.</p>
+                 <div class="card card--danger">
+                    <h3>Danger Zone</h3>
+                    <div>
+                        <p>Deleting your account is permanent. All your projects, teams, and billing information will be removed.</p>
+                        <button id="delete-account-btn" class="btn btn--danger">Delete My Account</button>
+                    </div>
+                </div>
+            </section>
+            <!-- 8. TEAMS SECTION (NEW) -->
+<section id="teams-section" class="content-section">
+    <div class="section-header-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+        <div>
+            <h1>Teams & Collaboration</h1>
+            <p>Manage your workspaces and collaborative projects.</p>
+        </div>
+        <button id="create-team-btn" class="btn btn--primary"><i class="fas fa-plus"></i> Create Team</button>
+    </div>
+
+    <!-- Active Teams Grid -->
+    <div class="card">
+        <h3>My Workspaces</h3>
+        <div id="teams-list-container" class="pricing-grid">
+            <!-- Team cards injected here via JS -->
+            <div class="empty-state">Loading teams...</div>
+        </div>
+    </div>
+
+    <!-- Incoming Invites -->
+    <div class="card" id="invites-card">
+        <h3>Pending Invitations</h3>
+        <div id="invites-list-container">
+            <p class="text-light">No pending invitations.</p>
+        </div>
+    </div>
+</section>
+        </div>
+    </main>
+
+    <!-- MODALS -->
+     <!-- CREATE TEAM MODAL -->
+<div id="create-team-modal" class="modal hidden">
+    <div class="modal__overlay"></div>
+    <div class="modal__content">
+        <div class="modal__header">
+            <h3>Create New Workspace</h3>
+            <button class="btn-icon modal__close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal__body">
+            <div class="form-group">
+                <label>Workspace Name</label>
+                <input type="text" id="new-team-name" class="form__input" placeholder="e.g. Acme Design Team">
+            </div>
+            <div class="form-group">
+                <label>Description (Optional)</label>
+                <textarea id="new-team-desc" class="form__input" rows="2"></textarea>
+            </div>
+        </div>
+        <div class="modal__footer">
+            <button id="confirm-create-team-btn" class="btn btn--primary">Create Workspace</button>
+        </div>
+    </div>
+</div>
+<!-- MANAGE TEAM MODAL -->
+<div id="manage-team-modal" class="modal hidden">
+    <div class="modal__overlay"></div>
+    <div class="modal__content modal__content--large">
+        <div class="modal__header">
+            <h3 id="manage-team-title">Manage Team</h3>
+            <button class="btn-icon modal__close"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <!-- Tabs -->
+        <div class="modal-tabs" style="display:flex; border-bottom:1px solid #eee; padding:0 20px;">
+            <button class="tab-btn active" data-target="tab-members" style="padding:15px; background:none; border:none; cursor:pointer;">Members</button>
+            <button class="tab-btn" data-target="tab-projects" style="padding:15px; background:none; border:none; cursor:pointer;">Projects</button>
+        </div>
+
+        <div class="modal__body" style="min-height: 300px; padding: 20px;">
+            
+            <!-- TAB 1: MEMBERS -->
+            <div id="tab-members" class="tab-content active">
+    <div style="display:flex; gap:10px; margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:20px; padding-top:20px;">
+        <input type="email" id="invite-member-email" class="form__input" placeholder="member@email.com">
+        <button id="send-invite-btn" class="btn btn--secondary">Invite</button>
+    </div>
+    <h4>Team Members</h4>
+    <div id="team-members-list" class="checkbox-list-container"></div>
+</div>
+
+            <!-- TAB 2: PROJECTS -->
+            <div id="tab-projects" class="tab-content hidden">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h4>Active Projects</h4>
+                </div>
+                <div id="team-projects-list" class="pricing-grid" style="grid-template-columns: 1fr 1fr;"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <div id="delete-account-modal" class="modal hidden">
+        <div class="modal__overlay"></div>
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 class="modal__title">Delete Account</h2>
+                <button class="btn-icon modal__close" title="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal__body">
+                <p>Are you absolutely sure? This action cannot be undone. This will permanently delete your account and all associated data.</p>
+                <p>Please type <strong>delete my account</strong> to confirm.</p>
+                <div class="form-group">
+                    <input type="text" id="delete-confirm-input" class="form__input" autocomplete="off">
+                </div>
+            </div>
+            <div class="modal__footer">
+                <button id="cancel-delete-btn" class="btn btn--secondary">Cancel</button>
+                <button id="confirm-delete-btn" class="btn btn--danger" disabled>Delete Account</button>
+            </div>
+        </div>
+    </div>
+    <div id="notification-modal" class="modal hidden">
+        <div class="modal__content">
+             <div class="modal__body" id="notification-content">
+                <span id="notification-message">Notification message here.</span>
+                <button id="close-notification-btn" class="btn-icon modal__close" title="Close"><i class="fas fa-times"></i></button>
+             </div>
+        </div>
+    </div>
+    <div id="avatar-selection-modal" class="modal hidden">
+        <div class="modal__overlay"></div>
+        <div class="modal__content modal__content--avatars">
+            <div class="modal__header">
+                <h3 class="modal__title">Choose Your Avatar</h3>
+                <button class="btn-icon modal__close" aria-label="Close modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="avatar-grid" class="avatar-grid"></div>
+        </div>
+    </div>
+    <!-- Add a new Modal for Creating Collection Globally -->
+<div id="create-collection-modal" class="modal hidden">
+    <div class="modal__overlay"></div>
+    <div class="modal__content">
+        <div class="modal__header">
+            <h3 class="modal__title">Create New Collection</h3>
+            <button class="btn-icon modal__close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal__body">
+            <div class="form-group">
+                <label>Select Project</label>
+                <select id="collection-project-select" class="form__input">
+                    <!-- JS Populates this -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Collection Name</label>
+                <input type="text" id="new-collection-name" class="form__input" placeholder="e.g., Leads, Products">
+            </div>
+        </div>
+        <div class="modal__footer">
+            <button id="confirm-create-collection-btn" class="btn btn--primary">Create</button>
+        </div>
+    </div>
+</div>
+<!-- Add Preview Modal at the bottom of the body -->
+<div id="project-preview-modal" class="modal hidden">
+    <div class="modal__overlay"></div> <!-- Added overlay explicitly if missing -->
+    <div class="modal__content modal__content--xlarge" style="height: 85vh; display:flex; flex-direction:column;">
+        <div class="modal__header">
+            <h3 id="preview-modal-title">Project Preview</h3>
+            <button class="btn-icon modal__close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="preview-container--version" style="flex-grow:1; background:#f0f0f0; padding:0;">
+            <iframe id="project-preview-frame" style="width:100%; height:100%; border:none; background:white;"></iframe>
+        </div>
+    </div>
+</div>
+<!-- NEW: Cancellation Review Modal -->
+<div id="cancel-sub-modal" class="modal hidden">
+    <div class="modal__overlay"></div>
+    <div class="modal__content" style="max-width: 450px;">
+        <div class="modal__header">
+            <h3>Cancel Subscription</h3>
+            <button class="btn-icon modal__close" onclick="document.getElementById('cancel-sub-modal').classList.add('hidden')">&times;</button>
+        </div>
+        <div class="modal__body">
+            <p style="color: var(--text-light); margin-bottom: 15px;">We're sorry to see you go. Please tell us why you are leaving so we can improve Stylo AI.</p>
+            <div class="form-group">
+                <label>Your Feedback</label>
+                <textarea id="cancel-reason-input" class="form__input" rows="4" placeholder="Too expensive, missing features, etc..."></textarea>
+            </div>
+        </div>
+        <div class="modal__footer">
+            <button id="confirm-cancel-sub-btn" class="btn btn--danger full-width">Confirm Cancellation</button>
+        </div>
+    </div>
+</div>
+    <!-- NEW: CUSTOM CONTEXT MENU FOR IMAGE ACTIONS -->
+    <div id="custom-context-menu" class="custom-context-menu hidden">
+        <!-- JS will populate this with project list for exporting -->
+    </div>
+
+    <script type="module" src="../Project/js/firebase-config.js"></script>
+    <script src="../Project/js/darkmode.js"></script>
+    <script type="module" src="./profile-main.js"></script>
+
+</body>
+</html>
