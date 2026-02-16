@@ -7,8 +7,9 @@
     <link rel="icon" href="assets/Images/logo1.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="home.css">
 </head>
 <body>
@@ -94,8 +95,26 @@
                 <a href="#templates" class="btn btn-secondary" id="show-templates-btn" style="margin-left:1rem;">View Templates</a>
             </div>
 
-            <div class="mockup-container animate-on-scroll anim-fade-up delay-300">
-                <img src="https://mujtabaalam.vercel.app/editor/laptop (2).gif" alt="Stylo AI Editor Interface">
+            <!-- LAPTOP MOCKUP WITH GLOW -->
+            <div class="hero-visual animate-on-scroll anim-fade-up delay-300">
+                <div class="laptop-mockup">
+                    <div class="laptop-body">
+                        <!-- Camera Dot -->
+                        <div class="camera"></div>
+                        
+                        <!-- Screen Content -->
+                        <div class="screen">
+                            <img src="assets/videos/Generate Website.gif" alt="Stylo AI Interface">
+                            <!-- Glass Shine Effect -->
+                            <div class="glass-reflection"></div>
+                        </div>
+                    </div>
+                    <!-- Keyboard Base Hint -->
+                    <div class="laptop-base"></div>
+                </div>
+                
+                <!-- Animated Background Glow -->
+                <div class="ambient-glow"></div>
             </div>
         </div>
     </section>
@@ -139,7 +158,7 @@
                     </ul>
                 </div>
                 <div class="feature-visual animate-on-scroll anim-slide-left delay-200">
-                    <img src="https://mujtabaalam.vercel.app/editor/assets/videos/Conversational Web Design.gif" alt="Chat Interface">
+                    <img src="/assets/videos/Conversational Web Design.gif" alt="Chat Interface">
                 </div>
             </div>
 
@@ -156,7 +175,30 @@
                     </ul>
                 </div>
                 <div class="feature-visual animate-on-scroll anim-slide-right delay-200">
-                    <img src="https://mujtabaalam.vercel.app/editor/assets/videos/AI suggestion.gif" alt="Code Editor">
+                    <img src="/assets/videos/AI suggestion.gif" alt="Code Editor">
+                </div>
+            </div>
+            <!-- Feature 3: Slide Right (Deploy) -->
+            <div class="feature-split">
+                <div class="feature-text animate-on-scroll anim-slide-right">
+                    <span class="badge">Instant Publishing</span>
+                    <h2>Go Live with <br>One Click.</h2>
+                    <p>Stop worrying about servers, FTP, or DNS configuration. When your site is ready, simply hit "Deploy" and Stylo AI hosts it instantly on a global CDN.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> Free SSL Certificates</li>
+                        <li><i class="fas fa-check-circle"></i> Global CDN Hosting</li>
+                        <li><i class="fas fa-check-circle"></i> Instant Updates</li>
+                    </ul>
+                </div>
+                <div class="feature-visual animate-on-scroll anim-slide-left delay-200" style="border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+                    <!-- Video tag fixed with %20 for space -->
+                    <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
+                        <!-- Agar filename "Deploy Functon.mp4" hai (Typo ke saath): -->
+                        <source src="assets/videos/Deploy%20Functon.mp4" type="video/mp4">
+                        
+                        <!-- Agar filename "Deploy Function.mp4" hai (Correct spelling): -->
+                        <source src="assets/videos/Deploy%20Function.mp4" type="video/mp4">
+                    </video>
                 </div>
             </div>
         </div>
@@ -440,15 +482,19 @@
                         <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.5rem;">Stylo AI</span>
                     </a>
                     <p style="margin-bottom: 1.5rem;">The world's most advanced conversational website builder. Turn ideas into production-ready code instantly.</p>
-                    
+                     <div class="footer-socials" style="display: flex; gap: 1.5rem;">
+                    <a href="https://github.com/MD-Colab/" aria-label="GitHub" class="social-btn"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/company/111829940/admin/featured-content/ORGANIZATION_HOME/" aria-label="LinkedIn" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://x.com/MdColab?s=08" aria-label="Twitter" class="social-btn"><i class="fab fa-x-twitter"></i></a>
+                </div>
                     <!-- New Newsletter Section to make it rich -->
-                    <div class="newsletter-box">
+                    <!--<div class="newsletter-box">
                         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Stay updated with new features:</p>
                         <div style="display: flex; gap: 0.5rem;">
                             <input type="email" placeholder="Enter your email" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: 6px; color: white; width: 100%;">
                             <button class="btn btn-primary" style="padding: 0.6rem 1rem;"><i class="fas fa-arrow-right"></i></button>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
 
                 <!-- Product Links (Mapped to Home Sections) -->
@@ -494,10 +540,13 @@
                 
                 <!-- Social Icons -->
                 <div class="footer-socials" style="display: flex; gap: 1.5rem;">
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                    <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
-                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/MD-Colab/" aria-label="GitHub" class="social-btn"><i class="fab fa-github"></i></a>
+                    <a href="https://github.com/Mujtaba891/" aria-label="Founder GitHub" class="social-btn founder-btn" title="Founder"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/company/111829940/admin/featured-content/ORGANIZATION_HOME/" aria-label="LinkedIn" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.youtube.com/channel/UCTvevHI3yewJxV2tvM2iggw" aria-label="Youtube" class="social-btn"><i class="fab fa-youtube"></i></a>
+                    <a href="https://huggingface.co/md-colab" aria-label="Hugging Face" class="social-btn"><i class="fas fa-heart"></i></a>
+                    <a href="https://x.com/MdColab?s=08" aria-label="Twitter" class="social-btn"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://discord.gg/enEwEarF" aria-label="Discord" class="social-btn"><i class="fab fa-discord"></i></a>
                 </div>
             </div>
         </div>
