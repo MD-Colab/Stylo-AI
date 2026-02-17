@@ -1,22 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Home Page -->
+  
+  <!-- 1. HOME PAGE (Highest Priority) -->
   <url>
     <loc>https://styloai-beta.vercel.app/</loc>
     <lastmod>2026-02-17</lastmod>
     <priority>1.00</priority>
   </url>
   
-  <!-- Documentation -->
+  <!-- 2. AI EDITOR / PROJECT WORKSPACE -->
   <url>
-    <loc>https://styloai-beta.vercel.app/Documentation/</loc>
+    <loc>https://styloai-beta.vercel.app/Project/</loc>
+    <lastmod>2026-02-17</lastmod>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- 3. USER PROFILE & SETTINGS -->
+  <url>
+    <loc>https://styloai-beta.vercel.app/Profile/</loc>
     <lastmod>2026-02-17</lastmod>
     <priority>0.80</priority>
   </url>
-  
-  <!-- Common Docs Sections (Optional but recommended) -->
+
+  <!-- 4. DOCUMENTATION MAIN PAGE -->
+  <url>
+    <loc>https://styloai-beta.vercel.app/Documentation/</loc>
+    <lastmod>2026-02-17</lastmod>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- 5. DOCS: QUICK START GUIDE -->
   <url>
     <loc>https://styloai-beta.vercel.app/Documentation/#quick-start</loc>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- 6. DOCS: VISUAL DRAG & DROP EDITOR -->
+  <url>
+    <loc>https://styloai-beta.vercel.app/Documentation/#visual-editor</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- 7. DOCS: GENERATING E-COMMERCE SITES -->
+  <url>
+    <loc>https://styloai-beta.vercel.app/Documentation/#creating-ecommerce</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- 8. DOCS: AI CHAT & ASK AI DEBUGGING -->
+  <url>
+    <loc>https://styloai-beta.vercel.app/Documentation/#ai-chat</loc>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- 9. DOCS: PRICING & BILLING EXPLAINED -->
+  <url>
+    <loc>https://styloai-beta.vercel.app/Documentation/#pricing-and-billing</loc>
     <priority>0.70</priority>
   </url>
+
+  <!-- 10. LEGAL: PRIVACY POLICY -->
+  <url>
+    <loc>https://styloai-beta.vercel.app/Documentation/#privacy-policy</loc>
+    <priority>0.50</priority>
+  </url>
+
 </urlset>
