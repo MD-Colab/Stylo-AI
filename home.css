@@ -689,6 +689,69 @@ img, video { max-width: 100%; display: block; }
     .cta-buttons { flex-direction: column; }
     .trust-badges { flex-direction: column; gap: 0.5rem !important; }
 }
+/* --- PREMIUM SITELINKS NAVIGATION --- */
+.google-sitelinks-nav {
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+}
+
+.sitelinks-list {
+    list-style: none;
+    display: flex;
+    gap: 2.5rem; /* Links ke beech gap */
+    padding: 0;
+    margin: 0;
+    align-items: center;
+}
+
+.sitelink-item {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    position: relative;
+    padding: 5px 0;
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+}
+
+/* Hover par text color change */
+.sitelink-item:hover {
+    color: #fff;
+    transform: translateY(-2px); /* Halka sa lift effect */
+    text-shadow: 0 0 15px rgba(99, 102, 241, 0.5); /* Indigo glow */
+}
+
+/* Animated Underline Effect */
+.sitelink-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    transition: width 0.3s cubic-bezier(0.65, 0.05, 0.36, 1);
+    border-radius: 2px;
+}
+
+.sitelink-item:hover::after {
+    width: 100%;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .sitelinks-list {
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .sitelink-item {
+        font-size: 0.85rem;
+    }
+}
 /* --- FOOTER --- */
 .footer { padding: 5rem 0 2rem; border-top: 1px solid var(--border-color); background: var(--bg-secondary); }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
