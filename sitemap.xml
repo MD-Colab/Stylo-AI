@@ -5,113 +5,113 @@
 
   <!-- 1. CORE PLATFORM PAGES -->
   <url>
-    <loc>https://styloai-beta.vercel.app/</loc>
+    <loc>https://styloai-md.vercel.app/</loc>
     <lastmod>2026-02-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.00</priority>
     <image:image>
-      <image:loc>https://styloai-beta.vercel.app/assets/Images/logo1.png</image:loc>
+      <image:loc>https://styloai-md.vercel.app/assets/Images/logo1.png</image:loc>
       <image:title>Stylo AI - Build Websites Instantly</image:title>
     </image:image>
     <video:video>
-      <video:thumbnail_loc>https://styloai-beta.vercel.app/assets/Images/logo1.png</video:thumbnail_loc>
+      <video:thumbnail_loc>https://styloai-md.vercel.app/assets/Images/logo1.png</video:thumbnail_loc>
       <video:title>Deploy Function Demonstration</video:title>
       <video:description>Learn how to deploy your website in one click with Stylo AI.</video:description>
-      <video:content_loc>https://styloai-beta.vercel.app/assets/videos/Deploy%20Function.mp4</video:content_loc>
+      <video:content_loc>https://styloai-md.vercel.app/assets/videos/Deploy%20Function.mp4</video:content_loc>
       <video:publication_date>2026-02-17T00:00:00+00:00</video:publication_date>
     </video:video>
   </url>
 
   <url>
-    <loc>https://styloai-beta.vercel.app/Project/</loc>
+    <loc>https://styloai-md.vercel.app/Project/</loc>
     <priority>0.90</priority>
     <image:image>
-      <image:loc>https://styloai-beta.vercel.app/assets/Images/Generate.gif</image:loc>
+      <image:loc>https://styloai-md.vercel.app/assets/Images/Generate.gif</image:loc>
       <image:title>AI Project Generation Workspace</image:title>
     </image:image>
   </url>
 
   <url>
-    <loc>https://styloai-beta.vercel.app/Profile/</loc>
+    <loc>https://styloai-md.vercel.app/Profile/</loc>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://styloai-beta.vercel.app/Documentation/</loc>
+    <loc>https://styloai-md.vercel.app/Documentation/</loc>
     <priority>0.90</priority>
     <image:image>
-      <image:loc>https://styloai-beta.vercel.app/assets/videos/AI%20suggestion.gif</image:loc>
+      <image:loc>https://styloai-md.vercel.app/assets/videos/AI%20suggestion.gif</image:loc>
       <image:title>Stylo AI Smart Code Editor Suggestions</image:title>
     </image:image>
   </url>
 
   <!-- 2. DOCUMENTATION DEEP LINKS (SEO Content) -->
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#quick-start</loc><priority>0.85</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#ai-chat</loc><priority>0.85</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#generating-websites</loc><priority>0.85</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#editing-refining</loc><priority>0.85</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#code-editor</loc><priority>0.85</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#saving-projects</loc><priority>0.80</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#version-history</loc><priority>0.80</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#deployment</loc><priority>0.80</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#project-images</loc><priority>0.75</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#project-databases</loc><priority>0.75</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#using-mentions</loc><priority>0.75</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#form-handling</loc><priority>0.75</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#creating-ecommerce</loc><priority>0.80</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#workspaces-and-teams</loc><priority>0.80</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#sharing-projects</loc><priority>0.75</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#user-roles</loc><priority>0.70</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#real-time-editing</loc><priority>0.75</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#visual-editor</loc><priority>0.85</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#project-wizard</loc><priority>0.80</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#pricing-and-billing</loc><priority>0.70</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#custom-prompts</loc><priority>0.75</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#exporting-code</loc><priority>0.80</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#troubleshooting</loc><priority>0.60</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#security-best-practices</loc><priority>0.60</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#privacy-policy</loc><priority>0.50</priority></url>
-  <url><loc>https://styloai-beta.vercel.app/Documentation/#terms-and-conditions</loc><priority>0.50</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#quick-start</loc><priority>0.85</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#ai-chat</loc><priority>0.85</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#generating-websites</loc><priority>0.85</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#editing-refining</loc><priority>0.85</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#code-editor</loc><priority>0.85</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#saving-projects</loc><priority>0.80</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#version-history</loc><priority>0.80</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#deployment</loc><priority>0.80</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#project-images</loc><priority>0.75</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#project-databases</loc><priority>0.75</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#using-mentions</loc><priority>0.75</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#form-handling</loc><priority>0.75</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#creating-ecommerce</loc><priority>0.80</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#workspaces-and-teams</loc><priority>0.80</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#sharing-projects</loc><priority>0.75</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#user-roles</loc><priority>0.70</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#real-time-editing</loc><priority>0.75</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#visual-editor</loc><priority>0.85</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#project-wizard</loc><priority>0.80</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#pricing-and-billing</loc><priority>0.70</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#custom-prompts</loc><priority>0.75</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#exporting-code</loc><priority>0.80</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#troubleshooting</loc><priority>0.60</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#security-best-practices</loc><priority>0.60</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#privacy-policy</loc><priority>0.50</priority></url>
+  <url><loc>https://styloai-md.vercel.app/Documentation/#terms-and-conditions</loc><priority>0.50</priority></url>
 
   <!-- 3. AVATAR ASSETS (For Image Search Optimization) -->
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A1.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A2.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A3.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A4.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A5.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A6.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A7.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A8.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A9.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A10.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A11.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A12.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A13.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A14.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A15.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A16.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A17.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A18.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A19.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A20.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A21.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A22.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A23.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A24.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A25.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A26.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A27.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A28.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A29.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A30.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A31.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A32.jpeg</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/avatar/A33.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A1.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A2.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A3.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A4.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A5.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A6.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A7.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A8.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A9.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A10.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A11.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A12.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A13.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A14.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A15.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A16.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A17.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A18.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A19.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A20.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A21.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A22.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A23.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A24.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A25.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A26.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A27.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A28.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A29.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A30.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A31.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A32.jpeg</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/avatar/A33.jpeg</loc></url>
 
   <!-- 4. OTHER CORE ASSETS -->
-  <url><loc>https://styloai-beta.vercel.app/assets/Images/logo.png</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/Images/typing-text.gif</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/videos/Generate%20Website.gif</loc></url>
-  <url><loc>https://styloai-beta.vercel.app/assets/videos/Conversational%20Web%20Design.gif</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/Images/logo.png</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/Images/typing-text.gif</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/videos/Generate%20Website.gif</loc></url>
+  <url><loc>https://styloai-md.vercel.app/assets/videos/Conversational%20Web%20Design.gif</loc></url>
 
 </urlset>

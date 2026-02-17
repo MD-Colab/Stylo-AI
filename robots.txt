@@ -10,4 +10,4 @@ Disallow: /Profile/
 Disallow: /api/
 
 # Link to your sitemap
-Sitemap: https://styloai-beta.vercel.app/sitemap.xml
+Sitemap: https://styloai-md.vercel.app//sitemap.xml
