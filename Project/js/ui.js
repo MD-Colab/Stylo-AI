@@ -64,6 +64,27 @@ export const showLoader = (isLoading) => {
     $('send-chat-btn').disabled = isLoading;
 };
 
+// Button ki halat badalne ke liye function
+export const updateSendBtnStatus = (state) => {
+    const btn = document.getElementById('send-chat-btn');
+    if (!btn) return;
+    const icon = btn.querySelector('i');
+
+    if (state === 'analyzing') {
+        // Jab link ya image analyze ho rahi ho (Loader)
+        icon.className = 'fas fa-circle-notch fa-spin'; 
+        btn.disabled = true;
+    } else if (state === 'generating') {
+        // Jab AI website likh raha ho (Square Icon)
+        icon.className = 'fas fa-square'; 
+        btn.disabled = true; // User generation rok nahi sakta
+    } else {
+        // Jab sab khatam ho jaye (Paper Plane)
+        icon.className = 'fas fa-paper-plane';
+        btn.disabled = false;
+    }
+};
+
 export const toggleCardLoader = (projectId, show) => {
     const cardBtn = document.querySelector(`.template-card__donate-btn[data-id="${projectId}"]`);
     if (!cardBtn) return;

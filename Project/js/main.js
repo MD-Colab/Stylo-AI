@@ -418,7 +418,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Chat Inputs ---
-    on('send-chat-btn', 'click', () => addUserMessageToChat($('chat-input').value));
+on('send-chat-btn', 'click', () => {
+    const input = $('chat-input');
+    if (input.value.trim() || s.pendingAttachment) {
+        addUserMessageToChat(input.value);
+    }
+});
     const chatInp = $('chat-input');
     if (chatInp) {
         chatInp.addEventListener('keydown', (e) => {

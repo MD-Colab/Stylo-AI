@@ -109,58 +109,42 @@ export const processFile = (file) => {
  */
 export const scrapeURL = async (url) => {
     try {
-        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+        // Humne proxy change kar di hai (corsproxy.io zyada stable hai)
+        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
         const response = await fetch(proxyUrl);
-        const data = await response.json();
         
-        if (!data.contents) throw new Error("No content found");
+        if (!response.ok) throw new Error("Target website blocked the request.");
+
+        const html = await response.text();
+        if (!html) throw new Error("No content found");
 
         const parser = new DOMParser();
-        const doc = parser.parseFromString(data.contents, 'text/html');
+        const doc = parser.parseFromString(html, 'text/html');
         
-        // 1. Extract Images BEFORE cleaning
-        // We collect the top 10-15 images to avoid overwhelming the context window
+        // Extract Images
         let imageContext = "AVAILABLE IMAGES FROM SOURCE:\n";
         const images = Array.from(doc.querySelectorAll('img'));
         
-        images.slice(0, 15).forEach((img, index) => {
+        images.slice(0, 10).forEach((img, index) => {
             let src = img.getAttribute('src');
             if (!src) return;
-
-            // Handle relative URLs by making them absolute
-            if (src.startsWith('//')) src = 'https:' + src;
-            else if (src.startsWith('/')) {
-                try {
-                    const urlObj = new URL(url);
-                    src = urlObj.origin + src;
-                } catch (e) { /* ignore invalid base */ }
-            } else if (!src.startsWith('http')) {
-                 try {
-                    const urlObj = new URL(url);
-                    // Handle relative paths like 'assets/img.png'
-                    src = new URL(src, urlObj.href).href;
-                } catch (e) { /* ignore */ }
+            if (src.startsWith('/')) {
+                const urlObj = new URL(url);
+                src = urlObj.origin + src;
             }
-
-            // Add to context string
             imageContext += `[Image${index + 1}]: ${src}\n`;
-            
-            // Optional: Tag the image in the DOM with a reference for text extraction
-            img.textContent = ` [Image${index + 1}] `; 
         });
 
-        // 2. Clean up DOM
+        // Clean up DOM
         doc.querySelectorAll('script, style, svg, nav, footer, iframe').forEach(el => el.remove());
+        const cleanText = doc.body.innerText.replace(/\s\s+/g, ' ').trim().substring(0, 10000); 
         
-        // 3. Get Text Structure
-        const cleanText = doc.body.innerText.replace(/\s\s+/g, ' ').trim().substring(0, 15000); 
-        
-        // 4. Return Combined Context
         return `${imageContext}\n\nWEBSITE TEXT CONTENT:\n${cleanText}`;
 
     } catch (e) {
         console.error("Scraping error:", e);
-        throw new Error("Could not extract data from this URL. Security blocked or invalid link.");
+        // User ko batayen ke link block hai
+        throw new Error("This link is protected or private. Please describe the site manually instead.");
     }
 };
 // --- NEW: PERMISSION CHECKER ---

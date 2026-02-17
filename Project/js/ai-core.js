@@ -8,6 +8,24 @@ import { notify, showLoader } from './ui.js';
 import { DEFAULT_MODEL, GEMINI_API_BASE, CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from './constants.js';
 import { saveVersion } from './versions.js';
 
+// --- BUTTON STATUS HELPER ---
+const updateSendBtnStatus = (state) => {
+    const btn = document.getElementById('send-chat-btn');
+    if (!btn) return;
+    const icon = btn.querySelector('i');
+
+    if (state === 'analyzing') {
+        icon.className = 'fas fa-circle-notch fa-spin'; // Ghoomne wala loader
+        btn.disabled = true;
+    } else if (state === 'generating') {
+        icon.className = 'fas fa-square'; // Square icon
+        btn.disabled = true;
+    } else {
+        icon.className = 'fas fa-paper-plane'; // Wapas Paper plane
+        btn.disabled = false;
+    }
+};
+
 // --- UTILITIES ---
 
 const throttle = (func, limit) => {
@@ -91,21 +109,22 @@ const formatMainChatMessage = (text) => {
         return `__MENTION_BLOCK_${mentions.length - 1}__`;
     });
 
-    // 3. Extract File Links/Icons
-    const fileIconRegex = /<i class="fas fa-file-[^"]*"><\/i>\s*[^<\n]+/g; 
-    const files = [];
-    textProcessing = textProcessing.replace(fileIconRegex, (match) => {
-        files.push(match);
-        return `__FILE_BLOCK_${files.length - 1}__`;
-    });
-
-    // 4. Escape HTML in the remaining text
+    // 3. Escape HTML (except our placeholders)
     let formatted = textProcessing
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;");
 
-    // 5. Format Code Blocks
+    // --- NEW: Linkify URLs (Clickable Links) ---
+    // Ye regex http/https links ko detect karke <a> tag banata hai
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    formatted = formatted.replace(urlRegex, (url) => {
+        // Hum link ko wapas decode karenge taaki URL sahi rahe
+        const cleanUrl = url.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+        return `<a href="${cleanUrl}" target="_blank" class="chat-link" style="color: #93c5fd; text-decoration: underline; word-break: break-all;">${cleanUrl}</a>`;
+    });
+
+    // 4. Format Code Blocks
     const codeBlocks = [];
     formatted = formatted.replace(/```(\w*)([\s\S]*?)```/g, (match, lang, code) => {
         const html = `
@@ -117,14 +136,16 @@ const formatMainChatMessage = (text) => {
         return `__CODE_BLOCK_${codeBlocks.length - 1}__`;
     });
 
-    // 6. Convert newlines
+    // 5. Restore placeholders and handle "Analyzed" marker
     formatted = formatted.replace(/\n/g, '<br>');
+    
+    // Manual Fix for <small> tag (Kyuki humne upar escape kar diya tha)
+    formatted = formatted.replace(/&lt;small&gt;/g, '<small style="opacity: 0.7; font-size: 0.85em; display: block; margin-top: 5px;">')
+                         .replace(/&lt;\/small&gt;/g, '</small>');
 
-    // 7. Restore Blocks
     formatted = formatted.replace(/__CODE_BLOCK_(\d+)__/g, (match, index) => codeBlocks[index]);
     formatted = formatted.replace(/__MENTION_BLOCK_(\d+)__/g, (match, index) => mentions[index]);
     formatted = formatted.replace(/__IMAGE_BLOCK_(\d+)__/g, (match, index) => images[index]);
-    formatted = formatted.replace(/__FILE_BLOCK_(\d+)__/g, (match, index) => files[index]);
 
     return formatted;
 };
@@ -287,99 +308,101 @@ export const enhancePrompt = async () => {
 export const addUserMessageToChat = async (text) => {
     const trimmedText = text.trim();
     if (!trimmedText && !s.pendingAttachment) return;
-    
-    const mode = s.currentProjectData?.mode || 'website';
-    let promptPrefix = "";
-    if (mode === 'form') {
-        promptPrefix = "FOCUS: Create a robust data collection form or dashboard. ";
-    } else if (mode === 'bot') {
-        promptPrefix = "FOCUS: Create a conversational Chatbot UI. ";
-    } else {
-        promptPrefix = "FOCUS: Create a High-Converting, Award-Winning Website. ";
-    }
 
-    let hiddenContext = "";
-    let userDisplayText = trimmedText; 
-    let multimodalContent = []; 
+    // Status: Button par loader chalao aur disable karo
+    updateSendBtnStatus('analyzing');
 
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const urls = trimmedText.match(urlRegex);
+    try {
+        const mode = s.currentProjectData?.mode || 'website';
+        let promptPrefix = mode === 'form' 
+            ? "FOCUS: Create a robust data collection form or dashboard. " 
+            : mode === 'bot' 
+                ? "FOCUS: Create a conversational Chatbot UI. " 
+                : "FOCUS: Create a High-Converting, Award-Winning Website. ";
 
-    if (urls && urls.length > 0) {
-        const urlToScrape = urls[0];
-        if (!urlToScrape.includes('cloudinary.com')) {
-            notify("Analyzing URL content...", "info");
-            try {
-                const scrapedContent = await scrapeURL(urlToScrape);
-                hiddenContext += `\n\n[CONTEXT FROM URL ${urlToScrape}]:\n${scrapedContent}\n\n`;
-                userDisplayText += ` <small>(Analyzed ${urlToScrape})</small>`;
-            } catch (e) {
-                notify(e.message, "error");
-            }
-        }
-    }
+        let hiddenContext = "";
+        let userDisplayText = trimmedText;
+        let multimodalContent = [];
 
-    if (s.pendingAttachment) {
-        const { name, url, content, type } = s.pendingAttachment;
-        if (type === 'text') {
-            hiddenContext += `\n\n[FILE CONTENT: ${name}]:\n${content}\n`;
-            userDisplayText += ` <i class="fas fa-file-code"></i> ${name}`;
-        } else if (type === 'image') {
-            userDisplayText += `\n<img src="${url}" class="chat-message-img" alt="Uploaded Image">`;
-            
-            try {
-                const imagePart = await imageUrlToBase64(url);
-                if (imagePart) {
-                    multimodalContent.push(imagePart);
+        // URL Scraping Logic
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        const urls = trimmedText.match(urlRegex);
+        if (urls && urls.length > 0) {
+            const urlToScrape = urls[0];
+            if (!urlToScrape.includes('cloudinary.com')) {
+                notify("Analyzing URL content...", "info");
+                try {
+                    const scrapedContent = await scrapeURL(urlToScrape);
+                    hiddenContext += `\n\n[CONTEXT FROM URL ${urlToScrape}]:\n${scrapedContent}\n\n`;
+                    userDisplayText += ` <small>(Analyzed ${urlToScrape})</small>`;
+                } catch (e) {
+                    notify(e.message, "error");
                 }
-            } catch (err) {
-                console.error("Image conversion error", err);
             }
-            
-            hiddenContext += `\n\nCRITICAL: Analyze this image and replicate its design/layout style.`;
-        } else {
-            hiddenContext += `\n\n[ATTACHED FILE]: ${name}\n[URL]: ${url}\n`;
-            userDisplayText += ` <i class="fas fa-file-download"></i> ${name}`;
         }
-        s.pendingAttachment = null;
-        document.getElementById('attachment-preview').classList.add('hidden');
-        document.getElementById('chat-file-upload').value = '';
-    }
 
-    s.chatMentions.forEach((mention, index) => {
-        const marker = `[${index + 1}]`;
-        const textPattern = `${mention.data.name} ${marker}`;
-        let iconClass = mention.type === 'image' ? "fas fa-image" : "fas fa-database";
-        let pillClass = mention.type === 'image' ? "mention-pill--image" : "mention-pill--db";
-        let dataAttr = mention.type === 'image' ? `data-url='${mention.data.url}'` : `data-id='${mention.data.id}'`;
-        const pillHTML = `<span class="mention-pill ${pillClass}" ${dataAttr}><i class="${iconClass}" style="pointer-events:none;"></i> ${mention.data.name}</span>`;
-        userDisplayText = userDisplayText.split(textPattern).join(pillHTML);
-    });
+        // File/Image Attachment Logic
+        if (s.pendingAttachment) {
+            const { name, url, content, type } = s.pendingAttachment;
+            if (type === 'text') {
+                hiddenContext += `\n\n[FILE CONTENT: ${name}]:\n${content}\n`;
+                userDisplayText += ` <i class="fas fa-file-code"></i> ${name}`;
+            } else if (type === 'image') {
+                userDisplayText += `\n<img src="${url}" class="chat-message-img" alt="Uploaded Image">`;
+                const imagePart = await imageUrlToBase64(url);
+                if (imagePart) multimodalContent.push(imagePart);
+                hiddenContext += `\n\nCRITICAL: Analyze this image and replicate its design style.`;
+            } else {
+                hiddenContext += `\n\n[ATTACHED FILE]: ${name}\n[URL]: ${url}\n`;
+                userDisplayText += ` <i class="fas fa-file-download"></i> ${name}`;
+            }
+            s.pendingAttachment = null;
+            document.getElementById('attachment-preview')?.classList.add('hidden');
+            const fileInp = document.getElementById('chat-file-upload');
+            if (fileInp) fileInp.value = '';
+        }
 
-    s.chatHistory.push({ role: 'user', text: userDisplayText });
-    renderChatHistory();
-    
-    const rawPrompt = constructPromptWithMentions(trimmedText);
-    const finalUserText = promptPrefix + rawPrompt + hiddenContext;
-    
-    let geminiContent = [];
-    geminiContent.push({ type: "text", text: finalUserText });
-    if (multimodalContent.length > 0) {
-        geminiContent = [ ...geminiContent, ...multimodalContent ];
-    }
-    
-    const chatInput = $('chat-input');
-    if (chatInput) {
-        chatInput.value = '';
-        chatInput.style.height = 'auto';
-    }
-    s.chatMentions = [];
-    import('./ui.js').then(m => {
-        m.updateChatInputVisual();
-        m.renderMentionedAssets();
-    });
+        // Mention Pills Handling (@images, #databases)
+        s.chatMentions.forEach((mention, index) => {
+            const marker = `[${index + 1}]`;
+            const textPattern = `${mention.data.name} ${marker}`;
+            const icon = mention.type === 'image' ? "fas fa-image" : "fas fa-database";
+            const pClass = mention.type === 'image' ? "mention-pill--image" : "mention-pill--db";
+            const dataAttr = mention.type === 'image' ? `data-url='${mention.data.url}'` : `data-id='${mention.data.id}'`;
+            const pillHTML = `<span class="mention-pill ${pClass}" ${dataAttr}><i class="${icon}" style="pointer-events:none;"></i> ${mention.data.name}</span>`;
+            userDisplayText = userDisplayText.split(textPattern).join(pillHTML);
+        });
 
-    generateWithStreaming(geminiContent);
+        // Update UI History
+        s.chatHistory.push({ role: 'user', text: userDisplayText });
+        renderChatHistory();
+
+        const rawPrompt = constructPromptWithMentions(trimmedText);
+        const finalUserText = promptPrefix + rawPrompt + hiddenContext;
+
+        // Gemini Payload Setup
+        const geminiContent = [{ type: "text", text: finalUserText }, ...multimodalContent];
+
+        // Cleanup Inputs
+        const chatInput = $('chat-input');
+        if (chatInput) {
+            chatInput.value = '';
+            chatInput.style.height = 'auto';
+        }
+        s.chatMentions = [];
+        
+        const uiModule = await import('./ui.js');
+        uiModule.updateChatInputVisual();
+        uiModule.renderMentionedAssets();
+
+        // Call Generator (Generate function status badal kar 'generating' kar degi)
+        generateWithStreaming(geminiContent);
+
+    } catch (error) {
+        console.error("Chat Process Error:", error);
+        notify("Failed to process message: " + error.message, "error");
+        updateSendBtnStatus('idle'); // Error ki surat mein button reset
+    }
 };
 
 // --- CORE AI INSTRUCTIONS ---
@@ -604,7 +627,7 @@ export const generateWithStreaming = async (userContent) => {
         notify('Please create or load a project first.', 'error');
         return;
     }
-
+    updateSendBtnStatus('generating');
     // 1. Get API Key
     const apiKey = await fetchSystemApiKey();
     if (!apiKey) return notify('System API Key not found. Please contact admin.', 'error');
@@ -766,6 +789,7 @@ export const generateWithStreaming = async (userContent) => {
         renderChatHistory();
         if ($('preview-frame')) $('preview-frame').srcdoc = s.html;
     } finally {
+        updateSendBtnStatus('idle');
         if (s.editId) {
             try {
                 await updateDoc(doc(db, "ai_templates", s.editId), {

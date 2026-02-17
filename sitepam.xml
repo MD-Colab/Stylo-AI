@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Home Page -->
+  <url>
+    <loc>https://stylo-ai.vercel.app/</loc>
+    <lastmod>2026-02-17</lastmod>
+    <priority>1.00</priority>
+  </url>
+  
+  <!-- Documentation -->
+  <url>
+    <loc>https://stylo-ai.vercel.app/Documentation/</loc>
+    <lastmod>2026-02-17</lastmod>
+    <priority>0.80</priority>
+  </url>
+  
+  <!-- Common Docs Sections (Optional but recommended) -->
+  <url>
+    <loc>https://stylo-ai.vercel.app/Documentation/#quick-start</loc>
+    <priority>0.70</priority>
+  </url>
+</urlset>

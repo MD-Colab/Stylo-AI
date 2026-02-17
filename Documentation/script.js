@@ -139,6 +139,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     <li><strong>&lt;i class="fas fa-paperclip"&gt;&lt;/i&gt; Attach Files:</strong> Upload images or data files (like .csv, .json) directly into the chat. The AI will analyze the file and use it as context. Uploaded images can be used directly in the design.</li>
                     <li><strong>URL Scraping:</strong> Simply paste a URL into the chat. The AI will scrape the content and structure of the page, allowing you to replicate or redesign existing websites.</li>
                 </ul>
+                <h3>Deep URL Scraping & Design Replication</h3>
+<p>Stylo AI V2 doesn't just "visit" a link; it performs a deep analysis of the target website to provide rich context for your generation.</p>
+<ul>
+    <li><strong>Image Extraction:</strong> Our scraper identifies and extracts the top 15 high-quality images from the URL. You can then ask the AI, <em>"Use the same hero image from the link I shared"</em>, and it will know exactly which one to use.</li>
+    <li><strong>Structural Analysis:</strong> The AI reads the semantic structure (Heads, Navs, Sections) to understand the layout hierarchy of the source site.</li>
+    <li><strong>Content Context:</strong> It cleans and extracts up to 15,000 characters of text, allowing you to say <em>"Rewrite the content of my site based on the info from this URL"</em>.</li>
+</ul>
+<p><strong>How to use:</strong> Simply paste any public URL into the chat. You will see an <em>(Analyzed URL)</em> notification, confirming the AI has absorbed that site's data.</p>
 
                 <h2>The "Ask AI" Panel</h2>
                 <p>This new panel is a dedicated debugging and code-assistance tool. It's designed for asking specific questions about the *currently existing code* in your project.</p>
@@ -247,6 +255,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     <li><strong>Issue a Command:</strong> An input window will pop up. Type a specific instruction for the AI.</li>
                     <li><strong>Apply the Patch:</strong> The AI will generate a replacement for your selection. You can then apply this "patch" with a single click.</li>
                 </ol>
+                <h3>The Floating Magic Wand</h3>
+<p>Unlike traditional AI editors that suggest code for the whole file, Stylo's <strong>Contextual Widget</strong> acts like a surgical tool. When you select code, a floating wand icon appears precisely at your cursor position.</p>
+<ul>
+    <li><strong>Surgical Precision:</strong> The AI only sees and modifies what you highlight. This prevents it from breaking other working parts of your file.</li>
+    <li><strong>Instant Diff:</strong> Once you issue a command (e.g., "Make this function async"), the AI generates a 'patch'. You can review it and click "Apply" to swap the old code with the new one instantly.</li>
+    <li><strong>Language Aware:</strong> The widget knows if you are editing HTML, CSS, or JS and adapts its logic accordingly.</li>
+</ul>
+<p><small><em>Pro Tip: Use this to fix specific CSS alignment issues without the AI changing your entire layout.</em></small></p>
                 <h3>Powerful Use Cases:</h3>
                 <ul>
                     <li><strong>Refactoring:</strong> Select a messy function and type "Refactor this for clarity and performance."</li>
@@ -665,6 +681,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 <h2>Managing Your Subscription</h2>
                 <p>Your billing dashboard provides a clear overview of your current plan, your next billing date, and access to your payment history and invoices. From here, you can upgrade, downgrade, or cancel your subscription at any time. Changes to your plan will take effect at the end of your current billing cycle.</p>
+                <div style="margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), transparent); border: 2px dashed var(--primary-color); border-radius: 12px;">
+    <h2 style="margin-top:0; color: var(--primary-color);">👑 The Elite Bird Promotion</h2>
+    <p>To celebrate the launch of Stylo AI V2, we are offering <strong>FREE Lifetime Elite Business Access</strong> to our first 20 users. This is a first-come, first-served opportunity to unlock every premium feature without ever paying a subscription fee.</p>
+    <h3>How to Claim:</h3>
+    <ol>
+        <li>Go to your <strong>Profile Dashboard</strong>.</li>
+        <li>Navigate to the <strong>Account</strong> section.</li>
+        <li>Look for the "Early Bird Promotion" card. If slots are available, enter your professional title and click <strong>"Claim Free Elite Access"</strong>.</li>
+    </ol>
+    <p><em>Note: This offer requires no credit card and grants you unlimited projects, team collaboration, and advanced AI models for life.</em></p>
+</div>
             `
         },
         'custom-prompts': { 

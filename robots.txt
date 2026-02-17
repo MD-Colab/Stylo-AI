@@ -1,0 +1,13 @@
+# Stylo AI Robots.txt
+User-agent: *
+Allow: /
+Allow: /Documentation/
+Allow: /assets/
+
+# Do not index private/app sections
+Disallow: /Project/
+Disallow: /Profile/
+Disallow: /api/
+
+# Link to your sitemap
+Sitemap: https://stylo-ai.vercel.app/sitemap.xml

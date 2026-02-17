@@ -727,10 +727,74 @@ img, video { max-width: 100%; display: block; }
     border-color: var(--primary-color);
 }
 
+/* --- MOBILE FOOTER FIX --- */
 @media (max-width: 768px) {
-    .footer-bottom {
-        flex-direction: column;
+    .footer {
+        padding: 4rem 1rem 2rem; /* Side padding kam kar di taaki space mile */
+        height: auto; /* Height auto taaki content fit ho jaye */
+        overflow: visible;
+    }
+
+    .footer-grid {
+        /* Char columns ko stack karke 1 column bana diya */
+        grid-template-columns: 1fr !important; 
         text-align: center;
+        gap: 2.5rem; /* Columns ke beech gap */
+    }
+
+    .footer-brand {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Logo aur text center kar diya */
+    }
+
+    .footer-brand a {
+        justify-content: center;
+    }
+
+    .footer-col ul {
+        padding: 0;
+        list-style: none;
+    }
+
+    .footer-col ul li a:hover {
+        padding-left: 0; /* Mobile par slide effect hata diya taaki text jump na kare */
+        color: var(--primary-color);
+    }
+
+    .footer-bottom {
+        flex-direction: column !important; /* Stack Copyright and Socials */
+        text-align: center;
+        gap: 1.5rem;
+        margin-top: 2rem;
+        padding-top: 2rem;
+    }
+
+    .footer-socials {
+        justify-content: center; /* Social icons center alignment */
+    }
+
+    /* Newsletter box fix for mobile */
+    .newsletter-box div {
+        flex-direction: row; /* Input aur button ko ek hi line mein rakha */
+        max-width: 320px;
+        margin: 0 auto;
+    }
+    
+    .newsletter-box input {
+        font-size: 0.9rem;
+    }
+}
+
+/* Extra small devices (iPhone SE etc) */
+@media (max-width: 480px) {
+    .footer-brand p {
+        font-size: 0.9rem;
+    }
+    
+    .footer-col h4 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
     }
 }
 .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: white; cursor: pointer; }
