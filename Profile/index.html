@@ -58,6 +58,7 @@
             </nav>
         </aside>
 
+        <div id="profile-view-wrapper" class="profile-blurred">
         <!-- CONTENT AREA -->
         <div class="profile-content">
             <!-- 1. Profile Section -->
@@ -162,6 +163,22 @@
                         </div>
                     </form>
                 </div>
+                <div class="profile-detail-group full-width" style="margin-top: 20px; padding: 15px; background: rgba(255, 111, 0, 0.05); border: 1px solid rgba(255, 111, 0, 0.2); border-radius: 12px;">
+    <label style="color: #FF6F00; font-weight: 700;"><i class="fas fa-link"></i> MD Colab Ecosystem</label>
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="https://mdcolab.vercel.app/assets/logo/mdcolab-logo.png" width="30px" style="border-radius: 50%;">
+            <div>
+                <span style="display: block; font-size: 0.9rem; font-weight: 600;">Main Ecosystem ID</span>
+                <small style="color: var(--text-light);">Access all MD Colab tools</small>
+            </div>
+        </div>
+        <!-- MD Colab Profile ki link -->
+        <a href="https://mdcolab.vercel.app/Collab/profile/" target="_blank" class="btn btn--sm" style="background: #FF6F00; color: white; border: none; border-radius: 8px; padding: 8px 15px; font-size: 0.8rem; text-decoration: none;">
+            Open MD Profile <i class="fas fa-external-link-alt" style="font-size: 0.7rem; margin-left: 5px;"></i>
+        </a>
+    </div>
+</div>
             </section>
 
             <!-- 3. Pricing & Billing Section -->
@@ -375,9 +392,38 @@
     </div>
 </section>
         </div>
+        </div>
     </main>
 
     <!-- MODALS -->
+     <!-- Is div mein aapka poora purana profile content hona chahiye -->
+<div id="profile-view-wrapper" class="profile-blurred">
+    <!-- Aapka existing profile HTML yahan rahega -->
+</div>
+
+<!-- MD PIN VERIFICATION OVERLAY -->
+<div id="ecosystem-lock-overlay" class="ecosystem-overlay">
+    <div class="lock-card">
+        <div class="lock-header">
+            <img src="https://mdcolab.vercel.app/assets/logo/mdcolab-logo.png" alt="MD Colab">
+            <i class="fas fa-plus" style="font-size: 0.8rem; opacity: 0.5;"></i>
+            <img src="/assets/Images/logo1.png" alt="Stylo AI">
+        </div>
+        <h2>Unlock Elite Workspace</h2>
+        <p>Enter your 6-digit <strong>MD Pin</strong> to link your ecosystem identity and unlock all premium features.</p>
+        
+        <div class="pin-input-group">
+            <input type="text" id="ecosystem-md-pin" placeholder="••••••" maxlength="8" autocomplete="off">
+            <button id="verify-ecosystem-btn" class="btn btn--primary">
+                Connect Ecosystem <i class="fas fa-link"></i>
+            </button>
+        </div>
+        
+        <div class="lock-footer">
+            <a href="https://mdcolab.vercel.app/Collab/profile/" target="_blank">Don't have a Pin? Generate in MD Colab</a>
+        </div>
+    </div>
+</div>
      <!-- CREATE TEAM MODAL -->
 <div id="create-team-modal" class="modal hidden">
     <div class="modal__overlay"></div>

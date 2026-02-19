@@ -27,6 +27,26 @@ export const renderProfileSection = () => {
         imgs.forEach(img => img.src = user.photoURL);
     }
 
+     // --- WEBSITE LINK LOGIC (CLICKABLE) ---
+    const websiteEl = $('#website-view');
+    if (websiteEl) {
+        if (user.website && user.website.startsWith('http')) {
+            // Agar website URL hai, toh usay clickable Link bana do
+            websiteEl.innerHTML = `
+                <a href="${user.website}" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   style="color: #6366f1; text-decoration: underline; font-weight: 500;">
+                   ${user.website} <i class="fas fa-external-link-alt" style="font-size: 0.7rem; margin-left: 5px;"></i>
+                </a>`;
+        } else {
+            // Agar link nahi hai toh "Not set" dikhao
+            websiteEl.textContent = user.website || 'Not set';
+            websiteEl.style.color = 'inherit'; // Reset color
+        }
+    }
+    
+
     // View Mode
     const setContent = (id, val) => { const el = $(id); if(el) el.textContent = val || 'Not set'; };
     setContent('#display-name-view', user.displayName);
@@ -35,7 +55,6 @@ export const renderProfileSection = () => {
     setContent('#age-view', user.age);
     setContent('#gender-view', user.gender);
     setContent('#position-view', user.position);
-    setContent('#website-view', user.website);
     setContent('#location-view', user.location);
     
     // Edit Form
@@ -49,6 +68,7 @@ export const renderProfileSection = () => {
     setValue('#website-input', user.website);
     setValue('#location-input', user.location);
 };
+
 
 const toggleEditMode = () => {
     const isEditing = $('#profile-form').classList.contains('hidden');

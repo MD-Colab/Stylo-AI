@@ -1,32 +1,141 @@
 import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
-import { doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js";
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js";
 import { auth, db } from './firebase-config.js';
 import { s } from './state.js';
 import { $ } from './utils.js';
-import { notify, resetWorkspace } from './ui.js';
+import { notify, resetWorkspace, setLoading } from './ui.js';
 import { loadTemplates, loadSharedProjects } from './templates.js';
 import { handleRouteChange } from './main.js';
 import { PRE_ASSIGNED_AVATARS } from './avatars.js';
 
+// --- MD COLAB BRIDGE CONFIG ---
+const mdColabConfig = {
+    apiKey: "AIzaSyDQ097vz04Oj7QpHIZKNR9KVp5L0U03Fio",
+    authDomain: "md-colab-63228.firebaseapp.com",
+    projectId: "md-colab-63228",
+    storageBucket: "md-colab-63228.firebasestorage.app",
+    messagingSenderId: "568580723297",
+    appId: "1:568580723297:web:1426515deda2d3d0a45020"
+};
+const mdApp = getApps().find(a => a.name === "mdColab") || initializeApp(mdColabConfig, "mdColab");
+const mdDb = getFirestore(mdApp);
+
+/**
+ * STYLO AI - ECOSYSTEM SYNC
+ * Autofills profile from MD Colab and fixes MD Colab DB status
+ */
+async function syncEcosystem(user, styloUserData) {
+    try {
+        console.log("Searching MD Colab DB for email:", user.email);
+        const q = query(collection(mdDb, "users"), where("email", "==", user.email));
+        const snap = await getDocs(q);
+
+        if (!snap.empty) {
+            const mdDoc = snap.docs[0]; 
+            const mdData = mdDoc.data();
+            const mdInternalId = mdDoc.id;
+
+            const isVerified = mdData.isVerified === true;
+            const isConnected = mdData.connectedApps?.styloAI === true;
+
+            if (isVerified || isConnected) {
+                console.log("✅ MD Colab Identity Found. Syncing...");
+
+                const mdPortfolioUrl = mdData.username ? `https://mdcolab.vercel.app/@${mdData.username}` : "";
+                const fullName = (mdData.firstName + " " + (mdData.lastName || "")).trim();
+                
+                const autofillData = {
+                    displayName: fullName || styloUserData.displayName,
+                    bio: mdData.bio || styloUserData.bio || "",
+                    position: mdData.role || "", 
+                    location: mdData.address || "", 
+                    photoURL: mdData.profilePhotoBase64 || styloUserData.photoURL || null,
+                    website: mdPortfolioUrl,
+                    plan: 'business', 
+                    isElite: true,
+                    linkedMDColab: true,
+                    lastSync: new Date().toISOString()
+                };
+
+                // 1. Update Stylo AI DB
+                await updateDoc(doc(db, "users", user.uid), autofillData);
+
+                // 2. Update Local State
+                Object.assign(s.user, autofillData);
+
+                // 3. UI Update
+                if($('user-email')) $('user-email').textContent = fullName;
+                if($('user-avatar') && autofillData.photoURL) $('user-avatar').src = autofillData.photoURL;
+
+                // 4. Reverse Fix: Update MD Colab DB if it says false
+                if (!mdData.connectedApps?.styloAI) {
+                    await updateDoc(doc(mdDb, "users", mdInternalId), {
+                        "connectedApps.styloAI": true 
+                    });
+                }
+                notify(`Elite Access Active! Sync complete.`, "success");
+            }
+        }
+    } catch (e) { 
+        console.error("Ecosystem Sync Error:", e); 
+    }
+}
+
+/**
+ * VERIFY & LINK VIA MD PIN (Overlay Logic)
+ */
+async function verifyAndLinkEcosystem() {
+    const pinInput = document.getElementById('ecosystem-md-pin');
+    const enteredPin = pinInput.value.trim();
+    const btn = document.getElementById('verify-ecosystem-btn');
+
+    if (enteredPin.length < 4) return notify("Please enter your MD Pin", "error");
+
+    setLoading(btn, true, "Verifying...");
+
+    try {
+        const q = query(collection(mdDb, "users"), where("email", "==", s.user.email));
+        const snap = await getDocs(q);
+
+        if (snap.empty) throw new Error("No MD Colab account found for this email.");
+
+        const mdDoc = snap.docs[0];
+        const mdData = mdDoc.data();
+
+        if (mdData.mdPin === enteredPin) {
+            // Unlock UI first
+            document.getElementById('ecosystem-lock-overlay').classList.add('hidden');
+            document.getElementById('profile-view-wrapper').classList.remove('profile-blurred');
+            
+            // Run full sync
+            await syncEcosystem(s.user, s.user);
+            import('./ui.js').then(m => m.renderProfileSection());
+            notify("Ecosystem Connected!", "success");
+        } else {
+            throw new Error("Invalid MD Pin. Try again.");
+        }
+    } catch (e) {
+        notify(e.message, "error");
+    } finally {
+        setLoading(btn, false);
+    }
+}
+
+/**
+ * MAIN AUTH LISTENER
+ */
 export function initAuth() {
     onAuthStateChanged(auth, async (user) => {
-        // Safe UI toggling
         const loginBtn = $('login-btn');
         const userInfo = $('user-info');
+        
         if (loginBtn) loginBtn.classList.toggle('hidden', !!user);
         if (userInfo) userInfo.classList.toggle('hidden', !user);
 
-        const chatInput = $('chat-input');
-        if (chatInput) chatInput.disabled = true;
-        
-        const genBtn = $('generate-btn');
-        if (genBtn) genBtn.disabled = true;
-        
-        const sendBtn = $('send-chat-btn');
-        if (sendBtn) sendBtn.disabled = true;
-
         if (user) {
             try {
+                // 1. Get/Create Stylo User
                 const userRef = doc(db, "users", user.uid);
                 const userSnap = await getDoc(userRef);
                 let userData;
@@ -35,105 +144,62 @@ export function initAuth() {
                     userData = userSnap.data();
                 } else {
                     userData = {
-                        uid: user.uid,
-                        email: user.email,
+                        uid: user.uid, email: user.email,
                         displayName: user.displayName || 'New User',
-                        photoURL: PRE_ASSIGNED_AVATARS[user.email] || user.photoURL || null, 
+                        photoURL: PRE_ASSIGNED_AVATARS[user.email] || user.photoURL || null,
                         bio: "Welcome to Stylo AI!",
-                        createdAt: serverTimestamp()
+                        plan: 'free', createdAt: serverTimestamp()
                     };
                     await setDoc(userRef, userData);
                 }
-                
+
                 s.user = { ...user, ...userData };
 
-                // --- SAFE UI UPDATES ---
-                const emailDisplay = $('user-email');
-                if (emailDisplay) emailDisplay.textContent = s.user.displayName || s.user.email;
-                
-                const dropdownEmail = $('user-email-dropdown');
-                if (dropdownEmail) dropdownEmail.textContent = s.user.email;
-                
-                const avatarImg = $('user-avatar');
-                if (avatarImg) {
-                    if (s.user.photoURL) {
-                        avatarImg.src = s.user.photoURL;
-                    } else {
-                        avatarImg.src = '../assets/Images/logo1.png'; 
+                // 2. Handle Lock/Blur Overlay
+                const lockOverlay = document.getElementById('ecosystem-lock-overlay');
+                const viewWrapper = document.getElementById('profile-view-wrapper');
+
+                if (userData.linkedMDColab) {
+                    if(lockOverlay) lockOverlay.classList.add('hidden');
+                    if(viewWrapper) viewWrapper.classList.remove('profile-blurred');
+                    // Run sync to keep data updated
+                    await syncEcosystem(user, userData);
+                } else {
+                    if(lockOverlay) {
+                        lockOverlay.classList.remove('hidden');
+                        document.getElementById('verify-ecosystem-btn').onclick = verifyAndLinkEcosystem;
                     }
+                    if(viewWrapper) viewWrapper.classList.add('profile-blurred');
                 }
-                // -----------------------------------------------------------
 
-                // --- API KEY FETCHING UPDATE (ONLY GEMINI) ---
-                try {
-                    const keyDoc = await getDoc(doc(db, "settings", "api_keys"));
-                    if (keyDoc.exists()) {
-                        const data = keyDoc.data();
-                        
-                        // FIX: Prioritize 'geminiApiKey' and ignore OpenRouter
-                        if (data.geminiApiKey) {
-                            s.apiKey = data.geminiApiKey.trim();
-                            console.log("Gemini API Key loaded successfully.");
-                        } else {
-                            console.warn("geminiApiKey not found in settings/api_keys");
-                            // Optional: Alert the user if critical key is missing
-                            // notify("System API Key is missing. AI features may not work.", "warning");
-                        }
-                    } else {
-                        console.warn("API Key document (settings/api_keys) not found.");
-                    }
-                } catch (keyErr) {
-                    console.error("Error fetching API key:", keyErr);
-                }
-                // -----------------------------------------------------------
+                // 3. UI and Assets
+                if ($('user-email')) $('user-email').textContent = s.user.displayName;
+                if ($('user-avatar')) $('user-avatar').src = s.user.photoURL || '../assets/Images/logo1.png';
 
-                if (chatInput) {
-                    chatInput.disabled = false;
-                    chatInput.placeholder = "e.g., Create a contact form linked to collection #leads...";
-                }
-                if (genBtn) genBtn.disabled = false;
-                if (sendBtn) sendBtn.disabled = false;
+                const keyDoc = await getDoc(doc(db, "settings", "api_keys"));
+                if (keyDoc.exists()) s.apiKey = keyDoc.data().geminiApiKey?.trim();
 
-                // Load Data
                 await Promise.all([loadTemplates(), loadSharedProjects()]);
-
-            } catch (e) {
-                console.error("Failed to initialize user session:", e);
-                notify(e.message, 'error');
-                if (chatInput) chatInput.placeholder = "AI is offline. System error.";
+                
+            } catch (e) { 
+                console.error(e);
+                notify("Auth initialization failed", "error"); 
             }
         } else {
             s.user = null;
             resetWorkspace();
-            s.sharedProjects = [];
-            const tList = $('templates-list');
-            if (tList) tList.innerHTML = '<p>Sign in to view your saved projects.</p>';
-            const sList = $('shared-templates-list');
-            if (sList) sList.innerHTML = '';
         }
-
         handleRouteChange();
     });
 }
 
 export const handleSignIn = () => signInWithPopup(auth, new GoogleAuthProvider());
-export const handleSignOut = () => signOut(auth);
+export const handleSignOut = () => signOut(auth).then(() => window.location.reload());
 
 export const applyUIPermissions = (role) => {
     const isViewer = role === 'viewer';
-    const controlsToDisable = [
-        'ai-persona-input', 'chat-input', 'send-chat-btn', 'generate-btn',
-        'save-btn', 'confirm-save-btn', 'history-btn',
-        'code-edit-toggle', 'ai-suggestion-prompt', 'ai-suggestion-btn', 'ai-apply-changes-btn'
-    ];
-    
-    controlsToDisable.forEach(id => {
-        const el = $(id);
-        if (el) el.disabled = isViewer;
-    });
-
-    const shareBtn = $('share-btn');
-    if (shareBtn) shareBtn.disabled = isViewer;
+    const ids = ['chat-input', 'send-chat-btn', 'generate-btn', 'save-btn', 'ai-persona-input'];
+    ids.forEach(id => { if ($(id)) $(id).disabled = isViewer; });
 };
 
 export const renderCollaborators = (collaborators) => {

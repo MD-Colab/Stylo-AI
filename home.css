@@ -576,13 +576,13 @@ img, video { max-width: 100%; display: block; }
 }
 
 .elite-badge {
-    background: #6366f1;
-    color: white;
+    color: rgb(134, 0, 151);
     font-size: 0.75rem;
     padding: 3px 10px;
     border-radius: 20px;
     vertical-align: middle;
     letter-spacing: 0.5px;
+    font-family: "Dancing Script", cursive;
 }
 
 .slots-counter {
