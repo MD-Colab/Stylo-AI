@@ -1,8 +1,0 @@
-/* MD Invoice — /invoice/products/style.css */
-.filter-pills{display:flex;gap:.4rem;flex-wrap:wrap}
-.filter-pill{padding:.4rem .9rem;border-radius:20px;font-size:.8rem;font-weight:600;border:1.5px solid var(--border);color:var(--text-soft);background:var(--card);cursor:pointer;transition:all var(--trans)}
-.filter-pill:hover{border-color:var(--brand);color:var(--brand)}
-.filter-pill.active{background:var(--brand);border-color:var(--brand);color:#fff}
-.prod-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
-.prod-icon.service{background:rgba(59,130,246,.1);color:#3B82F6}
-.prod-icon.product{background:rgba(16,185,129,.1);color:#10B981}
