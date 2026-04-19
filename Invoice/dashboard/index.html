@@ -1,0 +1,210 @@
+﻿<!-- FUMA Invoice — /Invoice/dashboard/index.html — FIXED v3 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — FUMA Invoice</title>
+    <!-- shared.css MUST come before style.css -->
+    <link rel="stylesheet" href="../shared.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Firebase BEFORE script.js -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <!-- Chart.js — loaded in head so it's ready when script.js calls new Chart() -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ── SIDEBAR ─────────────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <a href="/Invoice/dashboard/" class="sidebar-logo">
+            <div class="logo-icon"><i class="fas fa-file-invoice"></i></div>
+            <span>FUMA Invoice</span>
+        </a>
+        <button class="sidebar-close" id="sidebar-close">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <!-- Business card injected here by JS if bridge is loaded -->
+
+    <nav class="sidebar-nav">
+        <a href="/Invoice/dashboard/"  class="nav-item active" data-page="dashboard"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
+        <a href="/Invoice/builder/"    class="nav-item"        data-page="builder"><i class="fas fa-plus-circle"></i><span>New Invoice</span><span class="nav-badge new">New</span></a>
+        <a href="/Invoice/invoices/"   class="nav-item"        data-page="invoices"><i class="fas fa-file-invoice-dollar"></i><span>Invoices</span></a>
+        <a href="/Invoice/customers/index.html"  class="nav-item"        data-page="customers"><i class="fas fa-users"></i><span>Customers</span></a>
+        <a href="/Invoice/products/"   class="nav-item"        data-page="products"><i class="fas fa-box"></i><span>Products</span></a>
+        <div class="nav-divider">Finance</div>
+        <a href="/Invoice/accounting/" class="nav-item"        data-page="accounting"><i class="fas fa-book"></i><span>Accounting</span></a>
+        <a href="/Invoice/"    class="nav-item"        data-page="reports"><i class="fas fa-chart-bar"></i><span>Reports</span></a>
+        <a href="/Invoice/ai-insights/" class="nav-item"       data-page="ai-insights"><i class="fas fa-robot"></i><span>AI Insights</span></a>
+        <div class="nav-divider">Settings</div>
+        <a href="/Invoice/settings/"   class="nav-item"        data-page="settings"><i class="fas fa-cog"></i><span>Settings</span></a>
+        <a href="/Business/dashboard.html" class="nav-item"    data-page="business"><i class="fas fa-building"></i><span>My Business</span></a>
+        <a href="#" class="nav-item nav-item-danger"           id="logout-btn"><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a>
+    </nav>
+    <div class="sidebar-footer">
+        <a href="https://fumatechnologies.vercel.app" target="_blank" class="sidebar-powered">
+            <i class="fas fa-bolt"></i> Powered by FUMA Colab
+        </a>
+    </div>
+</aside>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<!-- ── MAIN ─────────────────────────────────────────────────────── -->
+<main class="main-content" id="main-content">
+
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+            <div class="topbar-greeting">
+                <span id="greeting-text">Good morning</span>, <strong id="user-name">Loading…</strong>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <div class="mode-toggle">
+                <button class="mode-pill active" id="pill-simple" onclick="setDashMode('simple')">
+                    <i class="fas fa-sun"></i> Simple
+                </button>
+                <button class="mode-pill" id="pill-pro" onclick="setDashMode('pro')">
+                    <i class="fas fa-chart-line"></i> Pro
+                </button>
+            </div>
+            <div class="topbar-avatar" id="topbar-avatar"><i class="fas fa-user"></i></div>
+        </div>
+    </header>
+
+    <!-- Quick actions -->
+    <section class="quick-actions">
+        <a href="/Invoice/builder/" class="qa-btn qa-primary"><i class="fas fa-plus"></i> Create Invoice</a>
+        <a href="/Invoice/customers/" class="qa-btn"><i class="fas fa-user-plus"></i> Add Client</a>
+        <a href="/Invoice/products/" class="qa-btn"><i class="fas fa-box"></i> Add Product</a>
+        <a href="/Invoice/accounting/" class="qa-btn pro-only"><i class="fas fa-book"></i> Ledger</a>
+    </section>
+
+    <!-- KPI grid -->
+    <section class="kpi-grid">
+        <div class="kpi-card kpi-revenue">
+            <div class="kpi-icon"><i class="fas fa-rupee-sign"></i></div>
+            <div class="kpi-body">
+                <div class="kpi-label">Total Revenue</div>
+                <div class="kpi-value" id="kpi-revenue">₹0.00</div>
+                <div class="kpi-delta positive" id="kpi-revenue-delta">—</div>
+            </div>
+        </div>
+        <div class="kpi-card kpi-pending">
+            <div class="kpi-icon"><i class="fas fa-clock"></i></div>
+            <div class="kpi-body">
+                <div class="kpi-label">Pending</div>
+                <div class="kpi-value" id="kpi-pending">₹0.00</div>
+                <div class="kpi-delta" id="kpi-pending-count">0 invoices</div>
+            </div>
+        </div>
+        <div class="kpi-card kpi-overdue">
+            <div class="kpi-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <div class="kpi-body">
+                <div class="kpi-label">Overdue</div>
+                <div class="kpi-value" id="kpi-overdue">₹0.00</div>
+                <div class="kpi-delta negative" id="kpi-overdue-count">0 invoices</div>
+            </div>
+        </div>
+        <div class="kpi-card kpi-clients pro-only">
+            <div class="kpi-icon"><i class="fas fa-users"></i></div>
+            <div class="kpi-body">
+                <div class="kpi-label">Total Clients</div>
+                <div class="kpi-value" id="kpi-clients">0</div>
+                <div class="kpi-delta" id="kpi-clients-new">0 new this month</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Charts (Pro only) -->
+    <section class="charts-section pro-only" id="charts-section">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Revenue (Last 6 Months)</h3>
+                <span class="chart-badge">Pro</span>
+            </div>
+            <!-- Fixed height on chart-wrap is critical for Chart.js to render -->
+            <div class="chart-wrap" style="position:relative;height:200px">
+                <canvas id="revenue-chart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Invoice Status</h3>
+                <span class="chart-badge">Pro</span>
+            </div>
+            <div class="chart-wrap chart-wrap-donut" style="position:relative;height:200px">
+                <canvas id="status-chart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Invoices -->
+    <section class="table-section">
+        <div class="section-header">
+            <h3>Recent Invoices</h3>
+            <a href="/Invoice/invoices/" class="see-all">See all <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="table-wrap">
+            <table class="inv-table">
+                <thead><tr>
+                    <th>Invoice</th><th>Client</th><th>Amount</th>
+                    <th>Due Date</th><th>Status</th><th>Actions</th>
+                </tr></thead>
+                <tbody id="recent-inv-body">
+                    <tr><td colspan="6"><div class="skeleton-row"></div></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Accounting (Pro only) -->
+    <section class="accounting-section pro-only">
+        <div class="section-header">
+            <h3>Recent Transactions</h3>
+            <a href="/Invoice/accounting/" class="see-all">View Ledger <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="table-wrap">
+            <table class="inv-table">
+                <thead><tr>
+                    <th>Date</th><th>Description</th><th>Type</th><th>Amount</th><th>Balance</th>
+                </tr></thead>
+                <tbody id="accounting-body">
+                    <tr><td colspan="5" style="text-align:center;color:#9CA3AF;padding:2rem">Loading…</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<div id="toast-container"></div>
+
+<!-- Reminder Modal -->
+<div class="modal-backdrop" id="reminder-modal">
+    <div class="modal-card reminder-card">
+        <div class="modal-icon"><i class="fab fa-whatsapp"></i></div>
+        <h3>Send Reminder</h3>
+        <p>Edit the message, then open WhatsApp.</p>
+        <textarea id="reminder-msg" rows="6" class="reminder-textarea"></textarea>
+        <div class="modal-actions">
+            <button class="btn-secondary" onclick="closeReminderModal()">Cancel</button>
+            <button class="btn-primary" onclick="sendReminder()"><i class="fab fa-whatsapp"></i> Open WhatsApp</button>
+        </div>
+    </div>
+</div>
+
+<!-- Business bridge (optional — remove if not using) -->
+<!-- <script src="../business-bridge.js"></script> -->
+
+<!-- Dashboard has its OWN script — NOT shared.js -->
+<script src="script.js"></script>
+</body>
+</html>

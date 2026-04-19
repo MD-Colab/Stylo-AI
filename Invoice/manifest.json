@@ -1,0 +1,17 @@
+{
+  "name": "FUMA Invoice — Professional Invoicing",
+  "short_name": "FUMA Invoice",
+  "description": "Create professional invoices, accept Razorpay payments, and track your business.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0F0F13",
+  "theme_color": "#FF6F00",
+  "icons": [
+    {
+      "src": "/assets/logo/og-fuma-invoice.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

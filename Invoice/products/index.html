@@ -1,0 +1,132 @@
+<!-- FUMA Invoice — /invoice/products/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products — FUMA Invoice</title>
+<link rel="stylesheet" href="../shared.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../responsive.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+<aside class="sidebar" id="sidebar"></aside>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<main class="main-content">
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+            <span class="topbar-title"><i class="fas fa-box"></i> Products & Services</span>
+        </div>
+        <div class="topbar-right">
+            <button class="btn btn-primary" onclick="openProductModal()">
+                <i class="fas fa-plus"></i> Add Product
+            </button>
+            <div class="topbar-avatar" id="topbar-avatar"><i class="fas fa-user"></i></div>
+        </div>
+    </header>
+
+    <div class="page-body">
+
+        <!-- Stats -->
+        <div class="stats-row" style="grid-template-columns:repeat(3,1fr)">
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(59,130,246,.1);color:#3B82F6"><i class="fas fa-boxes"></i></div>
+                <div class="stat-body"><div class="stat-label">Total Products</div><div class="stat-value" id="st-products">0</div><div class="stat-sub">In catalogue</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(16,185,129,.1);color:#10B981"><i class="fas fa-tag"></i></div>
+                <div class="stat-body"><div class="stat-label">Avg Price</div><div class="stat-value" id="st-avg-price">₹0</div><div class="stat-sub">Per product</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(245,158,11,.1);color:#F59E0B"><i class="fas fa-percent"></i></div>
+                <div class="stat-body"><div class="stat-label">Taxable Items</div><div class="stat-value" id="st-taxable">0</div><div class="stat-sub">With GST/tax</div></div>
+            </div>
+        </div>
+
+        <!-- Search + filter -->
+        <div class="card"><div class="card-body" style="padding:.9rem 1.2rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="prod-search" placeholder="Search products…">
+            </div>
+            <div class="filter-pills" id="type-pills">
+                <button class="filter-pill active" data-type="all">All</button>
+                <button class="filter-pill" data-type="product">Product</button>
+                <button class="filter-pill" data-type="service">Service</button>
+            </div>
+        </div></div>
+
+        <!-- Product table -->
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead><tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Tax %</th>
+                    <th>HSN/SAC</th>
+                    <th>Unit</th>
+                    <th>Actions</th>
+                </tr></thead>
+                <tbody id="prod-body">
+                    <tr><td colspan="7"><div class="skeleton" style="margin:.5rem 0"></div></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</main>
+
+<!-- Add / Edit Product Modal -->
+<div class="modal-backdrop" id="prod-modal">
+    <div class="modal-card">
+        <h3 id="prod-modal-title">Add Product / Service</h3>
+        <p class="modal-sub">These details auto-fill into new invoices.</p>
+        <input type="hidden" id="edit-prod-id">
+        <div class="field-row">
+            <div class="field"><label>Name <span>*</span></label><input type="text" id="prod-name" placeholder="Web Design Services"></div>
+            <div class="field"><label>Type</label>
+                <select id="prod-type">
+                    <option value="service">Service</option>
+                    <option value="product">Product</option>
+                </select>
+            </div>
+        </div>
+        <div class="field"><label>Description</label><textarea id="prod-desc" placeholder="Short description shown on invoice" rows="2"></textarea></div>
+        <div class="field-row">
+            <div class="field"><label>Price (₹) <span>*</span></label><input type="number" id="prod-price" placeholder="0.00" min="0" step="0.01"></div>
+            <div class="field"><label>Tax % (GST)</label><input type="number" id="prod-tax" placeholder="18" min="0" max="100"></div>
+        </div>
+        <div class="field-row">
+            <div class="field"><label>HSN / SAC Code</label><input type="text" id="prod-hsn" placeholder="998314"></div>
+            <div class="field"><label>Unit</label>
+                <select id="prod-unit">
+                    <option value="nos">Nos</option>
+                    <option value="hrs">Hrs</option>
+                    <option value="days">Days</option>
+                    <option value="kg">Kg</option>
+                    <option value="ltr">Ltr</option>
+                    <option value="sqft">Sqft</option>
+                    <option value="pcs">Pcs</option>
+                    <option value="set">Set</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="closeProdModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveProduct()"><i class="fas fa-save"></i> Save</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+<script src="../shared.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

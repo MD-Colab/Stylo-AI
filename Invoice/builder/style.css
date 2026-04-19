@@ -1,0 +1,299 @@
+/* MD Invoice — /invoice/builder/style.css */
+
+/* ── Layout ──────────────────────────────────────────────── */
+.builder-layout {
+    display: grid;
+    grid-template-columns: 1fr 480px;
+    gap: 0;
+    flex: 1;
+    min-height: calc(100dvh - var(--topbar-h));
+    align-items: start;
+}
+
+.builder-form {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    overflow-y: auto;
+    max-height: calc(100dvh - var(--topbar-h));
+}
+
+.builder-preview-wrap {
+    background: #E5E7EB;
+    border-left: 1px solid var(--border);
+    min-height: calc(100vh - var(--topbar-h));
+    position: sticky;
+    top: var(--topbar-h);
+    height: calc(100vh - var(--topbar-h));
+    overflow-y: auto;
+}
+.preview-sticky {
+    padding: 1.25rem;
+}
+.preview-label {
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: .75rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.preview-label::before { content: ''; width: 8px; height: 8px; background: var(--success); border-radius: 50%; display: inline-block; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:.3} }
+
+/* ── Form section ────────────────────────────────────────── */
+.bf-section {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 1.3rem;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+.bf-section-title {
+    font-size: .78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--brand);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+/* ── Template pills ──────────────────────────────────────── */
+.tpl-pills {
+    display: flex;
+    gap: .35rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3px;
+}
+.tpl-pill {
+    padding: 5px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: .78rem;
+    font-weight: 600;
+    color: var(--muted);
+    background: transparent;
+    cursor: pointer;
+    transition: all var(--trans);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+.tpl-pill.active { background: var(--card); color: var(--brand); box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+.tpl-pill:hover:not(.active) { color: var(--text); }
+
+/* ── Items table ─────────────────────────────────────────── */
+.items-wrap { overflow-x: auto; }
+.items-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .85rem;
+    min-width: 480px;
+}
+.items-table thead th {
+    background: var(--bg);
+    padding: .55rem .6rem;
+    text-align: left;
+    font-size: .68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+}
+.items-table tbody td { padding: .4rem .35rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.items-table tbody tr:last-child td { border-bottom: none; }
+.items-table input, .items-table select {
+    width: 100%;
+    padding: .45rem .5rem;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    font-size: .83rem;
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+    transition: border-color var(--trans);
+}
+.items-table input:focus, .items-table select:focus { border-color: var(--brand); background: #fff; }
+.items-table .item-total { font-weight: 700; color: var(--text); font-size: .85rem; white-space: nowrap; }
+.del-item-btn {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 1px solid #FECACA;
+    background: #FEF2F2;
+    color: var(--error);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .8rem;
+    cursor: pointer;
+    transition: all var(--trans);
+}
+.del-item-btn:hover { background: var(--error); color: #fff; border-color: var(--error); }
+
+/* ── Totals ──────────────────────────────────────────────── */
+.totals-table { margin-top: 1rem; border-top: 1px solid var(--border); }
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: .5rem 0;
+    font-size: .9rem;
+    color: var(--text-soft);
+    border-bottom: 1px solid var(--border);
+}
+.total-row:last-child { border-bottom: none; }
+.total-grand {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--brand);
+    padding-top: .75rem;
+}
+
+/* ── Invoice Preview ─────────────────────────────────────── */
+.invoice-preview {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,.15);
+    font-family: var(--inv-font, 'Segoe UI', sans-serif);
+    font-size: 12px;
+    color: #1F2937;
+    min-height: 400px;
+
+    /* Template CSS vars (defaults = modern) */
+    --inv-accent:    #FF6F00;
+    --inv-accent-lt: #FFF3E0;
+    --inv-header-bg: #FF6F00;
+    --inv-header-fg: #FFFFFF;
+    --inv-border:    #FFE0B2;
+    --inv-font:      'Segoe UI', sans-serif;
+    --inv-radius:    8px;
+}
+
+/* Preview sections */
+.prv-header {
+    background: var(--inv-header-bg);
+    color: var(--inv-header-fg);
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.prv-logo-name { font-size: 16px; font-weight: 800; }
+.prv-logo-sub  { font-size: 10px; opacity: .8; margin-top: 2px; }
+.prv-inv-title { font-size: 20px; font-weight: 800; text-align: right; }
+.prv-inv-num   { font-size: 10px; opacity: .8; margin-top: 2px; text-align: right; }
+
+.prv-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 16px 24px;
+    background: var(--inv-accent-lt);
+    border-bottom: 1px solid var(--inv-border);
+}
+.prv-meta-block h4 { font-size: 9px; text-transform: uppercase; letter-spacing: .5px; color: var(--inv-accent); font-weight: 700; margin-bottom: 4px; }
+.prv-meta-block p  { font-size: 11px; line-height: 1.5; color: #374151; }
+
+.prv-dates {
+    display: flex;
+    gap: 24px;
+    padding: 10px 24px;
+    background: var(--inv-accent-lt);
+    border-bottom: 1px solid var(--inv-border);
+    font-size: 10px;
+}
+.prv-date-item span { font-weight: 700; color: var(--inv-accent); }
+
+.prv-items { padding: 12px 24px; }
+.prv-items-table { width: 100%; border-collapse: collapse; }
+.prv-items-table th {
+    background: var(--inv-accent);
+    color: var(--inv-header-fg);
+    padding: 7px 8px;
+    text-align: left;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+.prv-items-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--inv-border);
+    font-size: 10px;
+    color: #374151;
+}
+.prv-items-table tbody tr:last-child td { border-bottom: none; }
+.prv-items-table tbody tr:nth-child(even) td { background: rgba(0,0,0,.02); }
+
+.prv-totals {
+    padding: 8px 24px 12px;
+    display: flex;
+    justify-content: flex-end;
+}
+.prv-totals-inner { width: 48%; }
+.prv-total-row { display: flex; justify-content: space-between; padding: 3px 0; font-size: 10px; color: #4B5563; }
+.prv-total-grand { font-size: 13px; font-weight: 800; color: var(--inv-accent); border-top: 2px solid var(--inv-accent); padding-top: 6px; margin-top: 4px; }
+
+.prv-notes {
+    padding: 10px 24px;
+    border-top: 1px solid var(--inv-border);
+    font-size: 10px;
+    color: #6B7280;
+    line-height: 1.5;
+}
+.prv-notes strong { color: #374151; display: block; margin-bottom: 2px; }
+
+.prv-footer {
+    text-align: center;
+    padding: 8px 24px;
+    background: var(--inv-accent-lt);
+    font-size: 9px;
+    color: #9CA3AF;
+    border-top: 1px solid var(--inv-border);
+}
+.prv-footer a { color: var(--inv-accent); text-decoration: none; font-weight: 600; }
+
+/* ── Client / Product picker list items ──────────────────── */
+.picker-item {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background var(--trans);
+    border-bottom: 1px solid var(--border);
+}
+.picker-item:hover { background: var(--brand-lt); }
+.picker-item:last-child { border-bottom: none; }
+.picker-item .pi-icon {
+    width: 36px; height: 36px;
+    background: var(--brand-lt);
+    color: var(--brand);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: .9rem;
+    flex-shrink: 0;
+}
+.picker-item .pi-name { font-weight: 600; color: var(--text); font-size: .9rem; }
+.picker-item .pi-sub  { font-size: .78rem; color: var(--muted); }
+.picker-item .pi-price { margin-left: auto; font-weight: 700; color: var(--brand); font-size: .88rem; }
+
+@media(max-width: 1024px) {
+    .builder-layout { grid-template-columns: 1fr; }
+    .builder-preview-wrap { display: none; }
+    .builder-form { max-height: none; overflow-y: visible; }
+}
+@media(max-width: 768px) {
+    .tpl-pills { display: none; }
+}

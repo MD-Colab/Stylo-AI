@@ -1,0 +1,117 @@
+<!-- FUMA Invoice — /invoice/customers/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customers — FUMA Invoice</title>
+<link rel="stylesheet" href="../shared.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../responsive.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+<aside class="sidebar" id="sidebar"></aside>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<main class="main-content">
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+            <span class="topbar-title"><i class="fas fa-users"></i> Customers</span>
+        </div>
+        <div class="topbar-right">
+            <button class="btn btn-primary" onclick="openCustomerModal()">
+                <i class="fas fa-user-plus"></i> Add Customer
+            </button>
+            <div class="topbar-avatar" id="topbar-avatar"><i class="fas fa-user"></i></div>
+        </div>
+    </header>
+
+    <div class="page-body">
+
+        <!-- Stats -->
+        <div class="stats-row" style="grid-template-columns:repeat(4,1fr)">
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(59,130,246,.1);color:#3B82F6"><i class="fas fa-users"></i></div>
+                <div class="stat-body"><div class="stat-label">Total Clients</div><div class="stat-value" id="st-clients">0</div><div class="stat-sub">All time</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(16,185,129,.1);color:#10B981"><i class="fas fa-rupee-sign"></i></div>
+                <div class="stat-body"><div class="stat-label">Total Invoiced</div><div class="stat-value" id="st-invoiced">₹0</div><div class="stat-sub" id="st-invoiced-sub">Across all clients</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(245,158,11,.1);color:#F59E0B"><i class="fas fa-clock"></i></div>
+                <div class="stat-body"><div class="stat-label">Outstanding</div><div class="stat-value" id="st-outstanding">₹0</div><div class="stat-sub">Unpaid invoices</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(239,68,68,.1);color:#EF4444"><i class="fas fa-exclamation"></i></div>
+                <div class="stat-body"><div class="stat-label">Overdue</div><div class="stat-value" id="st-overdue">₹0</div><div class="stat-sub" id="st-overdue-sub">Needs follow-up</div></div>
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div class="card"><div class="card-body" style="padding:.9rem 1.2rem">
+            <div class="search-bar" style="max-width:360px">
+                <i class="fas fa-search"></i>
+                <input type="text" id="cust-search" placeholder="Search by name, email, phone…">
+            </div>
+        </div></div>
+
+        <!-- Customer cards grid -->
+        <div class="cust-grid" id="cust-grid">
+            <div class="cust-loading">
+                <div class="skeleton" style="height:120px;border-radius:12px"></div>
+                <div class="skeleton" style="height:120px;border-radius:12px"></div>
+                <div class="skeleton" style="height:120px;border-radius:12px"></div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Add / Edit Customer Modal -->
+<div class="modal-backdrop" id="cust-modal">
+    <div class="modal-card">
+        <h3 id="cust-modal-title">Add Customer</h3>
+        <p class="modal-sub">Customer details will appear on invoices.</p>
+        <input type="hidden" id="edit-cust-id">
+        <div class="field"><label>Full Name <span>*</span></label><input type="text" id="cust-name" placeholder="Rahul Sharma" required></div>
+        <div class="field-row">
+            <div class="field"><label>Email</label><input type="email" id="cust-email" placeholder="rahul@example.com"></div>
+            <div class="field"><label>Phone</label><input type="tel" id="cust-phone" placeholder="+91 98765 43210"></div>
+        </div>
+        <div class="field"><label>Address</label><textarea id="cust-address" placeholder="Street, City, State, PIN" rows="2"></textarea></div>
+        <div class="field"><label>GST Number</label><input type="text" id="cust-gst" placeholder="22AAAAA0000A1Z5" maxlength="15"></div>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="closeCustModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveCustomer()"><i class="fas fa-save"></i> Save</button>
+        </div>
+    </div>
+</div>
+
+<!-- Ledger Modal -->
+<div class="modal-backdrop" id="ledger-modal">
+    <div class="modal-card" style="max-width:660px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.3rem">
+            <h3 id="ledger-modal-title">Client Ledger</h3>
+            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('ledger-modal').classList.remove('open')"><i class="fas fa-times"></i></button>
+        </div>
+        <p class="modal-sub" id="ledger-modal-sub"></p>
+        <div class="ledger-stats" id="ledger-stats"></div>
+        <div class="table-wrap" style="max-height:340px;overflow-y:auto">
+            <table class="data-table" id="ledger-table">
+                <thead><tr><th>Invoice #</th><th>Date</th><th>Due</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody id="ledger-body"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+<script src="../shared.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

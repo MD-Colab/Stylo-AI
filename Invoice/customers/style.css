@@ -1,0 +1,100 @@
+/* MD Invoice — /invoice/customers/style.css */
+
+.cust-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+}
+.cust-loading { display: contents; }
+
+/* Customer Card */
+.cust-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform var(--trans), box-shadow var(--trans);
+    cursor: pointer;
+}
+.cust-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+.cust-card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1.4rem;
+    border-bottom: 1px solid var(--border);
+}
+.cust-avatar {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--brand-lt);
+    color: var(--brand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    text-transform: uppercase;
+}
+.cust-info { flex: 1; min-width: 0; }
+.cust-name  { font-weight: 700; color: var(--text); font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cust-email { font-size: .78rem; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cust-phone { font-size: .78rem; color: var(--muted); }
+.cust-card-actions { display: flex; gap: .35rem; flex-shrink: 0; }
+.cca-btn {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .75rem;
+    cursor: pointer;
+    transition: all var(--trans);
+}
+.cca-btn:hover                { border-color: var(--brand); color: var(--brand); }
+.cca-btn.danger:hover         { border-color: var(--error); color: var(--error); }
+
+/* Stats bar inside card */
+.cust-stats-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-top: 1px solid var(--border);
+}
+.csb-item { padding: .7rem; text-align: center; border-right: 1px solid var(--border); }
+.csb-item:last-child { border-right: none; }
+.csb-label { font-size: .65rem; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); font-weight: 700; margin-bottom: 2px; }
+.csb-value { font-size: .88rem; font-weight: 700; color: var(--text); }
+.csb-paid   .csb-value { color: var(--success); }
+.csb-pending .csb-value { color: var(--warning); }
+
+/* Ledger modal stats */
+.ledger-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .6rem;
+    margin-bottom: 1rem;
+}
+.ls-item {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: .75rem;
+    text-align: center;
+}
+.ls-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); font-weight: 700; margin-bottom: 3px; }
+.ls-value { font-size: 1rem; font-weight: 700; color: var(--text); }
+.ls-paid  .ls-value { color: var(--success); }
+.ls-pend  .ls-value { color: var(--warning); }
+
+/* Ledger rows */
+#ledger-body tr:nth-child(even) td { background: var(--bg); }
+#ledger-body .ledger-overdue td   { border-left: 3px solid var(--error); }
+#ledger-body .ledger-paid td      { border-left: 3px solid var(--success); }
+
+@media(max-width:640px) {
+    .cust-grid { grid-template-columns: 1fr; }
+    .ledger-stats { grid-template-columns: 1fr 1fr; }
+}

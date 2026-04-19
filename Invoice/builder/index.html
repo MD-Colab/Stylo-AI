@@ -1,0 +1,207 @@
+<!-- FUMA Invoice — /invoice/builder/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice Builder — FUMA Invoice</title>
+<link rel="stylesheet" href="../shared.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../responsive.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Poppins:wght@400;600;700&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<aside class="sidebar" id="sidebar"></aside>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<main class="main-content">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+      <span class="topbar-title"><i class="fas fa-plus-circle"></i> <span id="builder-title">New Invoice</span></span>
+    </div>
+    <div class="topbar-right">
+      <div class="tpl-pills" id="tpl-pills">
+        <button class="tpl-pill active" data-tpl="modern" onclick="setTemplate('modern')"><i class="fas fa-star"></i> Modern</button>
+        <button class="tpl-pill" data-tpl="minimal" onclick="setTemplate('minimal')"><i class="fas fa-align-left"></i> Minimal</button>
+        <button class="tpl-pill" data-tpl="corporate" onclick="setTemplate('corporate')"><i class="fas fa-building"></i> Corporate</button>
+      </div>
+      <button class="btn btn-secondary" onclick="saveDraft()"><i class="fas fa-save"></i> Save Draft</button>
+      <button class="btn btn-primary" onclick="exportPDF()"><i class="fas fa-file-pdf"></i> Export PDF</button>
+      <div class="topbar-avatar" id="topbar-avatar"><i class="fas fa-user"></i></div>
+    </div>
+  </header>
+
+  <div class="builder-layout">
+
+    <!-- LEFT: Form Panel -->
+    <div class="builder-form" id="builder-form">
+
+      <!-- Business & Client -->
+      <div class="bf-section">
+        <div class="bf-section-title"><i class="fas fa-building"></i> From (Your Business)</div>
+        <div class="field"><label>Business Name</label><input type="text" id="biz-name" placeholder="Your Business Name"></div>
+        <div class="field-row">
+          <div class="field"><label>Email</label><input type="email" id="biz-email" placeholder="you@business.com"></div>
+          <div class="field"><label>Phone</label><input type="tel" id="biz-phone" placeholder="+91 98765 43210"></div>
+        </div>
+        <div class="field"><label>Address</label><textarea id="biz-address" rows="2" placeholder="Business address, City, State, PIN"></textarea></div>
+        <div class="field-row">
+          <div class="field"><label>GST Number</label><input type="text" id="biz-gst" placeholder="22AAAAA0000A1Z5"></div>
+          <div class="field"><label>Logo URL (optional)</label><input type="url" id="biz-logo" placeholder="https://..."></div>
+        </div>
+      </div>
+
+      <div class="bf-section">
+        <div class="bf-section-title"><i class="fas fa-user"></i> Bill To (Client)
+          <button class="btn btn-secondary btn-sm" onclick="openClientPicker()" style="margin-left:auto"><i class="fas fa-search"></i> Pick Client</button>
+        </div>
+        <div class="field"><label>Client Name <span>*</span></label><input type="text" id="client-name" placeholder="Client Name" required></div>
+        <div class="field-row">
+          <div class="field"><label>Email</label><input type="email" id="client-email" placeholder="client@example.com"></div>
+          <div class="field"><label>Phone</label><input type="tel" id="client-phone" placeholder="+91 ..."></div>
+        </div>
+        <div class="field"><label>Address</label><textarea id="client-address" rows="2" placeholder="Client address"></textarea></div>
+        <div class="field"><label>Client GST</label><input type="text" id="client-gst" placeholder="Client GST Number"></div>
+      </div>
+
+      <!-- Invoice Details -->
+      <div class="bf-section">
+        <div class="bf-section-title"><i class="fas fa-file-invoice"></i> Invoice Details</div>
+        <div class="field-row">
+          <div class="field"><label>Invoice # <span>*</span></label><input type="text" id="inv-number" placeholder="INV-0001" required></div>
+          <div class="field"><label>Currency</label>
+            <select id="inv-currency">
+              <option value="INR">₹ INR</option>
+              <option value="USD">$ USD</option>
+              <option value="EUR">€ EUR</option>
+              <option value="GBP">£ GBP</option>
+              <option value="AED">AED د.إ</option>
+              <option value="SGD">S$ SGD</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Issue Date</label><input type="date" id="inv-date"></div>
+          <div class="field"><label>Due Date</label><input type="date" id="inv-due"></div>
+        </div>
+        <div class="field"><label>PO Number (optional)</label><input type="text" id="inv-po" placeholder="PO-12345"></div>
+      </div>
+
+      <!-- Line Items -->
+      <div class="bf-section">
+        <div class="bf-section-title"><i class="fas fa-list"></i> Line Items
+          <button class="btn btn-secondary btn-sm" onclick="openProductPicker()" style="margin-left:auto"><i class="fas fa-box"></i> Add from Catalogue</button>
+        </div>
+        <div class="items-wrap">
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th style="width:35%">Description</th>
+                <th style="width:12%">Qty</th>
+                <th style="width:12%">Unit</th>
+                <th style="width:16%">Price</th>
+                <th style="width:12%">Tax%</th>
+                <th style="width:13%">Total</th>
+                <th style="width:40px"></th>
+              </tr>
+            </thead>
+            <tbody id="items-body"></tbody>
+          </table>
+        </div>
+        <button class="btn btn-secondary" onclick="addItem()" style="margin-top:.75rem;width:100%">
+          <i class="fas fa-plus"></i> Add Item
+        </button>
+      </div>
+
+      <!-- Totals -->
+      <div class="bf-section">
+        <div class="bf-section-title"><i class="fas fa-calculator"></i> Summary</div>
+        <div class="totals-grid">
+          <div class="field-row">
+            <div class="field"><label>Discount (%)</label><input type="number" id="discount-pct" value="0" min="0" max="100" oninput="recalc()"></div>
+            <div class="field"><label>Shipping / Other (₹)</label><input type="number" id="shipping" value="0" min="0" oninput="recalc()"></div>
+          </div>
+          <div class="totals-table">
+            <div class="total-row"><span>Subtotal</span><span id="t-subtotal">₹0.00</span></div>
+            <div class="total-row"><span>Discount</span><span id="t-discount">₹0.00</span></div>
+            <div class="total-row"><span>Tax</span><span id="t-tax">₹0.00</span></div>
+            <div class="total-row"><span>Shipping</span><span id="t-shipping">₹0.00</span></div>
+            <div class="total-row total-grand"><span>Total Due</span><span id="t-total">₹0.00</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes & Terms -->
+      <div class="bf-section">
+        <div class="bf-section-title"><i class="fas fa-sticky-note"></i> Notes & Terms</div>
+        <div class="field"><label>Notes (visible to client)</label>
+          <textarea id="inv-notes" rows="3" placeholder="Thank you for your business! Payment due within 30 days."></textarea>
+        </div>
+        <div class="field"><label>Terms & Conditions</label>
+          <textarea id="inv-terms" rows="3" placeholder="1. Payment due in 30 days&#10;2. Late fee: 2% per month"></textarea>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="bf-section" style="display:flex;gap:.75rem;flex-wrap:wrap">
+        <button class="btn btn-primary" style="flex:1" onclick="saveInvoice()"><i class="fas fa-paper-plane"></i> Save & Send</button>
+        <button class="btn btn-secondary" onclick="copyPayLink()"><i class="fas fa-link"></i> Copy Pay Link</button>
+        <button class="btn btn-secondary" onclick="sendWhatsApp()"><i class="fab fa-whatsapp" style="color:#25D366"></i> WhatsApp</button>
+      </div>
+
+    </div><!-- /builder-form -->
+
+    <!-- RIGHT: Live Preview -->
+    <div class="builder-preview-wrap">
+      <div class="preview-sticky">
+        <div class="preview-label">Live Preview</div>
+        <div class="invoice-preview" id="invoice-preview">
+          <!-- Rendered by script -->
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /builder-layout -->
+</main>
+
+<!-- Client Picker Modal -->
+<div class="modal-backdrop" id="client-picker-modal">
+  <div class="modal-card">
+    <h3><i class="fas fa-users"></i> Pick a Client</h3>
+    <p class="modal-sub">Select a saved customer to auto-fill their details.</p>
+    <div class="search-bar" style="margin-bottom:1rem;max-width:100%">
+      <i class="fas fa-search"></i>
+      <input type="text" id="client-picker-search" placeholder="Search customers…">
+    </div>
+    <div id="client-picker-list" style="max-height:320px;overflow-y:auto"></div>
+    <div class="modal-actions"><button class="btn btn-secondary" onclick="document.getElementById('client-picker-modal').classList.remove('open')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- Product Picker Modal -->
+<div class="modal-backdrop" id="product-picker-modal">
+  <div class="modal-card">
+    <h3><i class="fas fa-box"></i> Add from Catalogue</h3>
+    <p class="modal-sub">Click a product to add it as a line item.</p>
+    <div class="search-bar" style="margin-bottom:1rem;max-width:100%">
+      <i class="fas fa-search"></i>
+      <input type="text" id="product-picker-search" placeholder="Search products…">
+    </div>
+    <div id="product-picker-list" style="max-height:320px;overflow-y:auto"></div>
+    <div class="modal-actions"><button class="btn btn-secondary" onclick="document.getElementById('product-picker-modal').classList.remove('open')">Cancel</button></div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+<script src="../shared.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

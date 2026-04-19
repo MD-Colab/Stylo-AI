@@ -1,0 +1,136 @@
+<!-- FUMAInvoice — /invoice/accounting/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accounting — FUMA Invoice</title>
+<link rel="stylesheet" href="../shared.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../responsive.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+<aside class="sidebar" id="sidebar"></aside>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<main class="main-content">
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+            <span class="topbar-title"><i class="fas fa-book"></i> Accounting</span>
+        </div>
+        <div class="topbar-right">
+            <button class="btn btn-primary" onclick="openEntryModal()">
+                <i class="fas fa-plus"></i> Add Entry
+            </button>
+            <div class="topbar-avatar" id="topbar-avatar"><i class="fas fa-user"></i></div>
+        </div>
+    </header>
+
+    <div class="page-body">
+
+        <!-- Summary cards -->
+        <div class="stats-row" style="grid-template-columns:repeat(4,1fr)">
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(16,185,129,.1);color:#10B981"><i class="fas fa-arrow-down"></i></div>
+                <div class="stat-body"><div class="stat-label">Total Income</div><div class="stat-value" id="st-income">₹0</div><div class="stat-sub" id="st-income-sub">Credits</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(239,68,68,.1);color:#EF4444"><i class="fas fa-arrow-up"></i></div>
+                <div class="stat-body"><div class="stat-label">Total Expense</div><div class="stat-value" id="st-expense">₹0</div><div class="stat-sub" id="st-expense-sub">Debits</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(59,130,246,.1);color:#3B82F6"><i class="fas fa-balance-scale"></i></div>
+                <div class="stat-body"><div class="stat-label">Net Balance</div><div class="stat-value" id="st-balance">₹0</div><div class="stat-sub">Profit / Loss</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(245,158,11,.1);color:#F59E0B"><i class="fas fa-list"></i></div>
+                <div class="stat-body"><div class="stat-label">Total Entries</div><div class="stat-value" id="st-entries">0</div><div class="stat-sub">All time</div></div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="card"><div class="card-body acct-filters">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="acct-search" placeholder="Search description…">
+            </div>
+            <div class="filter-pills" id="type-pills">
+                <button class="filter-pill active" data-type="all">All</button>
+                <button class="filter-pill" data-type="credit">Income</button>
+                <button class="filter-pill" data-type="debit">Expense</button>
+            </div>
+            <div style="display:flex;gap:.5rem;margin-left:auto">
+                <input type="month" id="month-filter" class="month-input">
+                <button class="btn btn-secondary btn-sm" onclick="exportCSV()"><i class="fas fa-download"></i> Export</button>
+            </div>
+        </div></div>
+
+        <!-- Ledger table -->
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead><tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Running Balance</th>
+                    <th>Actions</th>
+                </tr></thead>
+                <tbody id="acct-body">
+                    <tr><td colspan="7"><div class="skeleton" style="margin:.5rem 0"></div></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<!-- Add / Edit Entry Modal -->
+<div class="modal-backdrop" id="entry-modal">
+    <div class="modal-card">
+        <h3 id="entry-modal-title">Add Entry</h3>
+        <p class="modal-sub">Record income or expense in your ledger.</p>
+        <input type="hidden" id="edit-entry-id">
+        <div class="field-row">
+            <div class="field"><label>Date <span>*</span></label><input type="date" id="entry-date" required></div>
+            <div class="field"><label>Type <span>*</span></label>
+                <select id="entry-type">
+                    <option value="credit">Income (Credit)</option>
+                    <option value="debit">Expense (Debit)</option>
+                </select>
+            </div>
+        </div>
+        <div class="field"><label>Description <span>*</span></label><input type="text" id="entry-desc" placeholder="e.g. Client payment for Invoice #001"></div>
+        <div class="field-row">
+            <div class="field"><label>Amount <span>*</span></label><input type="number" id="entry-amount" placeholder="0.00" min="0" step="0.01"></div>
+            <div class="field"><label>Category</label>
+                <select id="entry-category">
+                    <option value="invoice">Invoice Payment</option>
+                    <option value="salary">Salary</option>
+                    <option value="rent">Rent</option>
+                    <option value="utilities">Utilities</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="tools">Tools / Software</option>
+                    <option value="travel">Travel</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+        </div>
+        <div class="field"><label>Notes</label><textarea id="entry-notes" placeholder="Optional notes" rows="2"></textarea></div>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="closeEntryModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveEntry()"><i class="fas fa-save"></i> Save</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+<script src="../shared.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
